@@ -1,3 +1,6 @@
-http://example.com/2022/10/02/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/
 http://example.com/2022/10/02/%E8%AE%B0%E5%BD%95%E4%B8%80%E4%B8%8B%E5%9C%A8mac%E4%B8%8B%E7%BC%96%E8%AF%91FFmpeg%E7%9A%84%E8%BF%87%E7%A8%8B/
+http://example.com/2022/10/01/%E5%A6%82%E4%BD%95%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/
+http://example.com/link/index.html
+http://example.com/categories/index.html
+http://example.com/tags/index.html
 http://example.com/
