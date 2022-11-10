@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Mac下编译可调式的Debug版本FFmpeg全过程 | 吴健强のBLOG</title><meta name="keywords" content="FFmpeg"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="记录一下在Mac下编译可调式的Debug版本FFmpeg全过程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac下编译可调式的Debug版本FFmpeg全过程">
+<meta property="og:url" content="http://example.com/2022/11/10/%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="记录一下在Mac下编译可调式的Debug版本FFmpeg全过程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/8.jpg">
+<meta property="article:published_time" content="2022-11-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-10T12:37:31.842Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/8.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2022/11/10/%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Mac下编译可调式的Debug版本FFmpeg全过程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-10 20:37:31'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Mac下编译可调式的Debug版本FFmpeg全过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-09T16:00:00.000Z" title="发表于 2022-11-10 00:00:00">2022-11-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-10T12:37:31.842Z" title="更新于 2022-11-10 20:37:31">2022-11-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Mac下编译可调式的Debug版本FFmpeg全过程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>今天说一个比较好用的学习ffmpeg的方法。我们经常通过ffmpeg的命令来进行文件格式转换或者是查看文件的媒体信息。</p>
+<p>如果这个时候，我们想知道ffmpeg在执行我们输入命令后的具体程序运行流程，那么，我们就需要编译一个可调式版本的ffmpeg。事实上，通过调试我们输入的ffmpeg命令，在一定程度上有利于我们加深对ffmpeg的理解与学习。</p>
+<p>接下来，本文将通过以下几个步骤来演示如何调试ffmpeg</p>
+<ul>
+<li>ffmpeg的下载与编译</li>
+<li>如何通过gdb调试ffmpeg</li>
+<li>如何在vscode调试ffmpeg</li>
+</ul>
+<h1 id="FFmpeg的下载与编译"><a href="#FFmpeg的下载与编译" class="headerlink" title="FFmpeg的下载与编译"></a>FFmpeg的下载与编译</h1><p>输入以下参数进行下载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone -b release/xx  https://git.ffmpeg.org/ffmpeg.git</span><br></pre></td></tr></table></figure>
+<p>这边可以根据选择选择自己需要的ffmpeg版本</p>
+<p>clone后的ffmpeg文件夹结构如下：</p>
+<ul>
+<li>libavcodec：用于各种类型声音&#x2F;图像编解码；</li>
+<li>libavdevice：用于音视频数据采集和渲染等功能的设备相关;</li>
+<li>libavfilter：包含多媒体处理常用的滤镜功能;</li>
+<li>libavformat：包含多种多媒体容器格式的封装、解封装工具;</li>
+<li>libavutil：包含一些公共的工具函数；</li>
+<li>libpostproc：用于后期效果处理；</li>
+<li>libswresample：用于音频重采样和格式转换等功能;</li>
+<li>libswscale：用于视频场景比例缩放、色彩映射转换；</li>
+</ul>
+<p>接着进入ffmpeg文件夹，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/home/ws/Desktop/FFmpeg/4.2/FFmpeg4.2_debug/ --enable-shared --disable-optimizations --enable-debug --disable-x86asm --extra-cflags=-g --disable-stripping</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<h2 id="prefix"><a href="#prefix" class="headerlink" title="prefix:"></a>prefix:</h2><p>生成的bin lib include share存放的位置</p>
+<h2 id="shared"><a href="#shared" class="headerlink" title="shared:"></a>shared:</h2><p>ffmpeg生成的库一共有三个版本：static(静态库版本)、shared(动态库版本)、Dev(开发者版本)</p>
+<ul>
+<li>static: 里面只有3个应用程序：ffmpeg.exe，ffplay.exe，ffprobe.exe，每个exe的体积都很大，相关的Dll已经被编译到exe里面去了。作为工具而言此版本就可以满足我们的需求；</li>
+<li>shared:里面除了3个应用程序：ffmpeg.exe，ffplay.exe，ffprobe.exe之外，还有一些Dll(或dylib或so)，比如说avcodec-54.dll之类的。shared里面的可执行程序体积很小，他们在运行的时候，到相应的Dll中调用功能。程序运行过程必须依赖于提供的dll文件；</li>
+<li>dev:是用于开发的，里面包含了库文件xxx.lib以及头文件xxx.h，这个版本不包含exe文件。dev版本中include文件夹内文件用途</li>
+</ul>
+<h2 id="optimizations"><a href="#optimizations" class="headerlink" title="optimizations:"></a>optimizations:</h2><p>编译器优化，这个需要禁止</p>
+<h2 id="debug"><a href="#debug" class="headerlink" title="debug:"></a>debug:</h2><p>是否生成可调试的ffmpeg</p>
+<h2 id="x86asm"><a href="#x86asm" class="headerlink" title="x86asm:"></a>x86asm:</h2><p>独立x86程序集</p>
+<h2 id="–extra-cflag"><a href="#–extra-cflag" class="headerlink" title="–extra-cflag:"></a>–extra-cflag:</h2><p>第三方库不在默认的include路径，则需要指定–extra-cflags&#x3D;-I&#x2F;xxxx&#x2F;include<br>extra-cflags的额外用法：比如–extra-cflags&#x3D;-Dxxx，-D的意思是宏，指的就是在编译的时候预定义了xxx这样的宏</p>
+<h2 id="stripping"><a href="#stripping" class="headerlink" title="stripping:"></a>stripping:</h2><p>–disable-stripping：禁用剥离可执行文件和共享库</p>
+<p>其他ffmpeg的相关配置参数具体含义，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/x_wukong/p/12746031.html">详见</a></p>
+<p>等待configure检验完成后，接着输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make</span><br></pre></td></tr></table></figure>
+<p>如果想让编译的速度快一点可以查看一下电脑配置，通过make的-j命令（加速程序编译），比如我的电脑可以开到20</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make -j 20</span><br></pre></td></tr></table></figure>
+
+<p>等待make运行结束后，再输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<p>此时，我们完成了FFmpeg的编译</p>
+<h1 id="如何通过gdb调试ffmpeg"><a href="#如何通过gdb调试ffmpeg" class="headerlink" title="如何通过gdb调试ffmpeg"></a>如何通过gdb调试ffmpeg</h1><p>当我们完成FFmpeg后，我们可以在当前文件夹看到ffmpeg_g这个文件(带_g的就表示是可以调试的)<br>我们可以查看一下这个文件信息，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ffmpeg_g -version</span><br></pre></td></tr></table></figure>
+<p>接着，运行gdb首，并指定ffmpeg_g作为调试程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb ./ffmpeg_g</span><br></pre></td></tr></table></figure>
+<p>此时，我们可以验证一下是否可以调试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set args -version #设置运行参数linux 上使用 vscode debug ffmpeg ?</span><br><span class="line">b main #将断电打在main函数的入口处</span><br><span class="line">layout src #显示源码布局</span><br><span class="line">run #运行程序</span><br></pre></td></tr></table></figure>
+<p>接着输入n后回车即可进行单步调试<br><img src="/./%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/1.png"></p>
+<p>在此，我们继续演示一下如何进行调试。输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gdb ./ffmpeg_g</span><br><span class="line">set args -i &#x27;/home/ws/Videos/1.mp4&#x27;  #获取mp4信息</span><br><span class="line">b main #将断电打在main函数的入口处</span><br><span class="line">layout src #显示源码布局</span><br><span class="line">run #运行程序</span><br></pre></td></tr></table></figure>
+<p>gdb常用命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">n #单步调试</span><br><span class="line">s #单步单步跟踪到函数内部</span><br><span class="line">continue #直接运行到下一个断点处</span><br><span class="line">u 行数 #运行到指定位置</span><br><span class="line">b #添加断点，可根据行数、函数名、条件进行断点设置</span><br><span class="line">info breakpoints #查看已设置断点</span><br><span class="line">p #打印基本类型变量，数组，字符数组</span><br><span class="line">l #打印源码</span><br></pre></td></tr></table></figure>
+<p>具体可参考这篇<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74897601">文章</a></p>
+<h1 id="如何在vscode调试ffmpeg"><a href="#如何在vscode调试ffmpeg" class="headerlink" title="如何在vscode调试ffmpeg"></a>如何在vscode调试ffmpeg</h1><p>首先cd到FFmpeg文件夹，然后在命令行输入以下命令打开vscode：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">code . </span><br></pre></td></tr></table></figure>
+<p>接着在VS Code中同时按下Ctrl + Shift + P打开输入”launch.json”。<br>如果没有这个选项的话，那就同时按下Ctrl + Shift + D，选择创建一个”launch.json”，点击Web app(Egd)<br><img src="/./%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/2.png"></p>
+<p>把下面这段话替换进行</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gcc - 生成和调试活动文件&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppdbg&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;/../ffmpeg_g&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-version&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;stopAtEntry&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;externalConsole&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;MIMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gdb&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;setupCommands&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;为 gdb 启用整齐打印&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-enable-pretty-printing&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;ignoreFailures&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="comment">// &quot;preLaunchTask&quot;: &quot;C/C++: gcc 生成活动文件&quot;,</span></span><br><span class="line">        <span class="attr">&quot;miDebuggerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/bin/gdb&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;(gdb) Launch&quot;</span><span class="punctuation">,</span> <span class="comment">// 配置名称，将会在启动配置的下拉菜单中显示</span></span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppdbg&quot;</span><span class="punctuation">,</span> <span class="comment">// 配置类型，对于C/C++可认为此处只能是cppdbg，由cpptools提供；不et args -version #设置运行参数linux 上使用 vscode debug ffmpeg ?</span></span><br><span class="line">b main #将断电打在main函数的入口处</span><br><span class="line">layout src #显示源码布局</span><br><span class="line">run #运行程序同编程语言不同</span><br><span class="line">        <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span> <span class="comment">// 可以为launch（启动）或attach（附加）</span></span><br><span class="line">        <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;.exe&quot;</span><span class="punctuation">,</span> <span class="comment">// 将要进行调试的程序的路径</span></span><br><span class="line">        <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;$&#123;file&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;-o&quot;</span><span class="punctuation">,</span>    <span class="comment">// 指定输出文件名，不加该参数则默认输出a.exe，Linux下默认a.out</span></span><br><span class="line">            <span class="string">&quot;$&#123;fileDirname&#125;/$&#123;fileBasenameNoExtension&#125;.exe&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;-g&quot;</span><span class="punctuation">,</span>    <span class="comment">// 生成和调试有关的信息</span></span><br><span class="line">            <span class="string">&quot;-m64&quot;</span><span class="punctuation">,</span>  <span class="comment">// 不知为何有时会生成16位程序而无法运行，此条可强制生成64位的</span></span><br><span class="line">            <span class="string">&quot;-Wall&quot;</span><span class="punctuation">,</span> <span class="comment">// 开启额外警告</span></span><br><span class="line">            <span class="string">&quot;-static-libgcc&quot;</span><span class="punctuation">,</span>     <span class="comment">// 静态链接libgcc，一般都会加上</span></span><br><span class="line">            <span class="string">&quot;-fexec-charset=GBK&quot;</span><span class="punctuation">,</span> <span class="comment">// 生成的程序使用GBK编码，不加这条会导致Win下输出中文乱码；繁体系统改成BIG5</span></span><br><span class="line">            <span class="string">&quot;-D__USE_MINGW_ANSI_STDIO&quot;</span><span class="punctuation">,</span> <span class="comment">// 用MinGW写C时留着，否则不需要，用于支持printf的%zd和%Lf等</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span> <span class="comment">// 编译的命令，其实相当于VSC帮你在终端中输了这些东西</span></span><br><span class="line">        <span class="attr">&quot;stopAtEntry&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span> <span class="comment">// 设为true时程序将暂停在程序入口处，相当于在main上打断点</span></span><br><span class="line">        <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;&quot;</span><span class="punctuation">,</span> <span class="comment">// 调试程序时的工作目录，此为工作区文件夹；改成$&#123;fileDirname&#125;可变为文件所在目录</span></span><br><span class="line">        <span class="attr">&quot;environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span> <span class="comment">// 环境变量ffmpeg_g器的内容，具体作用自行Google</span></span><br><span class="line">                <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Enable pretty-printing for gdb&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-enable-pretty-printing&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;ignoreFailures&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;preLaunchTask&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Compile&quot;</span> <span class="comment">// 调试前执行的任务，一般为编译程序。与tasks.json的label相对应</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>保存退出后，我们打开想要调试的文件，以本次要调试的ffmpeg_g为例，打开fftools文件夹中的ffmpeg.c文件，并在4852行加上断点（鼠标挪到行号的左边会出现一个淡淡的小红点，点下之后会显示红点，代表你在本行打了一个断点）</p>
+<p><font color =red>注：请安装如下2个VS Code插件：Cffmpeg_g&#x2F;C++、C&#x2F;C++ Runner</font></p>
+<p>接下来可以点击上方的工具栏来执行相关调试操作，也可以使用快捷键来进行操作：<br>F5：继续执行<br>F10：单步跳过<br>F11：单步调试<br>Shift + F11：单步跳出<br>Shift + F5：停止调试</p>
+<p>之后我们可以通过”args”: [“-version”],这个参数来调试ffmpeg</p>
+<p>左边的DEBUG工具栏可以让你轻松地查看本地变量和寄存器，可以添加相关的变量监视，也可以查看函数的调用堆栈等信息。</p>
+<p>再举个查看文件信息的例子，修改launch.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gcc - 生成和调试活动文件&quot;</span><span class="punctuation">,</span>ffmpeg_g</span><br><span class="line">      <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppdbg&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;/../ffmpeg_g&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-i&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;&#x27;/home/ws/Videos/1.mp4&#x27;&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;stopAtEntry&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;externalConsole&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;MIMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gdb&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;setupCommands&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;为 gdb 启用整齐打印&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;-enable-pretty-printing&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;ignoreFailures&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="comment">// &quot;preLaunchTask&quot;: &quot;C/C++: gcc 生成活动文件&quot;,</span></span><br><span class="line">      <span class="attr">&quot;miDebuggerPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/usr/bin/gdb&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/./%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/3.png"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/10/%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/">http://example.com/2022/11/10/如何编译可调试的Debug版本FFmpeg，并通过GDB进行调试/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/8.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/10/24/%E5%9F%BA%E4%BA%8EOpenGL%E7%9A%84N%E5%8D%A1%E7%A1%AC%E4%BB%B6%E8%A7%A3%E7%A0%81%E7%BC%96%E7%A0%81%E6%B5%81%E7%A8%8B/"><img class="next-cover" src="/img/IronMan/5.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于OpenGL的N卡硬件解码编码流程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#FFmpeg%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E7%BC%96%E8%AF%91"><span class="toc-number">1.</span> <span class="toc-text">FFmpeg的下载与编译</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#prefix"><span class="toc-number">1.1.</span> <span class="toc-text">prefix:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shared"><span class="toc-number">1.2.</span> <span class="toc-text">shared:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#optimizations"><span class="toc-number">1.3.</span> <span class="toc-text">optimizations:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#debug"><span class="toc-number">1.4.</span> <span class="toc-text">debug:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#x86asm"><span class="toc-number">1.5.</span> <span class="toc-text">x86asm:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%93extra-cflag"><span class="toc-number">1.6.</span> <span class="toc-text">–extra-cflag:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#stripping"><span class="toc-number">1.7.</span> <span class="toc-text">stripping:</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87gdb%E8%B0%83%E8%AF%95ffmpeg"><span class="toc-number">2.</span> <span class="toc-text">如何通过gdb调试ffmpeg</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8vscode%E8%B0%83%E8%AF%95ffmpeg"><span class="toc-number">3.</span> <span class="toc-text">如何在vscode调试ffmpeg</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/10/%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/" title="Mac下编译可调式的Debug版本FFmpeg全过程"><img src="/img/IronMan/8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Mac下编译可调式的Debug版本FFmpeg全过程"/></a><div class="content"><a class="title" href="/2022/11/10/%E5%A6%82%E4%BD%95%E7%BC%96%E8%AF%91%E5%8F%AF%E8%B0%83%E8%AF%95%E7%9A%84Debug%E7%89%88%E6%9C%ACFFmpeg%EF%BC%8C%E5%B9%B6%E9%80%9A%E8%BF%87GDB%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/" title="Mac下编译可调式的Debug版本FFmpeg全过程">Mac下编译可调式的Debug版本FFmpeg全过程</a><time datetime="2022-11-09T16:00:00.000Z" title="发表于 2022-11-10 00:00:00">2022-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/24/%E5%9F%BA%E4%BA%8EOpenGL%E7%9A%84N%E5%8D%A1%E7%A1%AC%E4%BB%B6%E8%A7%A3%E7%A0%81%E7%BC%96%E7%A0%81%E6%B5%81%E7%A8%8B/" title="基于OpenGL的N卡硬件解码编码流程"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于OpenGL的N卡硬件解码编码流程"/></a><div class="content"><a class="title" href="/2022/10/24/%E5%9F%BA%E4%BA%8EOpenGL%E7%9A%84N%E5%8D%A1%E7%A1%AC%E4%BB%B6%E8%A7%A3%E7%A0%81%E7%BC%96%E7%A0%81%E6%B5%81%E7%A8%8B/" title="基于OpenGL的N卡硬件解码编码流程">基于OpenGL的N卡硬件解码编码流程</a><time datetime="2022-10-23T16:00:00.000Z" title="发表于 2022-10-24 00:00:00">2022-10-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/04/FFmpeg%E6%96%87%E4%BB%B6IO%E6%93%8D%E4%BD%9C/" title="FFmpeg文件IO操作"><img src="/img/IronMan/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="FFmpeg文件IO操作"/></a><div class="content"><a class="title" href="/2022/10/04/FFmpeg%E6%96%87%E4%BB%B6IO%E6%93%8D%E4%BD%9C/" title="FFmpeg文件IO操作">FFmpeg文件IO操作</a><time datetime="2022-10-03T16:00:00.000Z" title="发表于 2022-10-04 00:00:00">2022-10-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/04/FFmpeg%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="FFmpeg日志系统"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="FFmpeg日志系统"/></a><div class="content"><a class="title" href="/2022/10/04/FFmpeg%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="FFmpeg日志系统">FFmpeg日志系统</a><time datetime="2022-10-03T16:00:00.000Z" title="发表于 2022-10-04 00:00:00">2022-10-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/03/FFmpeg%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="FFmpeg学习笔记"><img src="/img/IronMan/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="FFmpeg学习笔记"/></a><div class="content"><a class="title" href="/2022/10/03/FFmpeg%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="FFmpeg学习笔记">FFmpeg学习笔记</a><time datetime="2022-10-02T16:00:00.000Z" title="发表于 2022-10-03 00:00:00">2022-10-03</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
