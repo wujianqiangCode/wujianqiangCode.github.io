@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>如何通过FFmpeg抽取视频数据 | 吴健强のBLOG</title><meta name="keywords" content="FFmpeg"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="如何通过FFmpeg抽取视频数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何通过FFmpeg抽取视频数据">
+<meta property="og:url" content="http://example.com/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="如何通过FFmpeg抽取视频数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/7.jpg">
+<meta property="article:published_time" content="2022-11-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-16T17:55:52.319Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/7.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '如何通过FFmpeg抽取视频数据',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-11-17 01:55:52'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">如何通过FFmpeg抽取视频数据</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-24T16:00:00.000Z" title="发表于 2022-11-25 00:00:00">2022-11-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-16T17:55:52.319Z" title="更新于 2022-11-17 01:55:52">2022-11-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="如何通过FFmpeg抽取视频数据"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>FFmpeg抽取视频数据的具体步骤其实和上一篇文章讲的FFmpeg抽取音频数据的步骤差不多。程序中唯二两个需要修改的地方是：</p>
+<ul>
+<li>av_find_best_stream函数中的输入参数AVMEDIA_TYPE_AUDIO需要修改成AVMEDIA_TYPE_VIDEO</li>
+<li>视频的pkt.dts不能直接与pkt.pts直接相等（因为视频中可能存在B帧），需要跟pkt.pts一样通过av_rescale_q_rnd函数进行转换</li>
+</ul>
+<p>抽取视频主要有以下几个步骤：</p>
+<ul>
+<li>参数的初始化</li>
+<li>打开多媒体文件</li>
+<li>从多媒体文件中找到视频流</li>
+<li>打开目的文件到上下文</li>
+<li>为目的文件创建一个新的视频流</li>
+<li>设置输出视频参数</li>
+<li>写多媒体文件头到目的文件</li>
+<li>从多媒体文件中读出视频数据到目的文件中</li>
+<li>写多媒体文件尾到文件中</li>
+<li>将申请的资源释放掉</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;libavutil/log.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;libavutil/avutil.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;libavformat/avformat.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span>&#123;</span><br><span class="line">    <span class="comment">//1.处理一些参数</span></span><br><span class="line">    <span class="type">char</span>* src;</span><br><span class="line">    <span class="type">char</span>* dst;</span><br><span class="line"></span><br><span class="line">    AVFormatContext *pFmtCtx = <span class="literal">NULL</span>;</span><br><span class="line">    AVFormatContext *oFmtCtx = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    AVOutputFormat *outFmt = <span class="literal">NULL</span>;</span><br><span class="line">    AVStream *outStream = <span class="literal">NULL</span>;</span><br><span class="line">    AVStream *inStream = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    AVPacket pkt;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> ret = <span class="number">-1</span>;</span><br><span class="line">    <span class="type">int</span> idx = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">av_log_set_level</span>(AV_LOG_DEBUG);</span><br><span class="line">    <span class="keyword">if</span>(argc &lt;<span class="number">3</span>)&#123;<span class="comment">//argv[0]:extra_video;argv[1]:源数据；argv[2]:目的数据；</span></span><br><span class="line">        <span class="built_in">av_log</span>(<span class="literal">NULL</span>, AV_LOG_INFO, <span class="string">&quot;arguments must be more than 3&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    src = argv[<span class="number">1</span>];</span><br><span class="line">    dst = argv[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//2.打开多媒体文件</span></span><br><span class="line">    ret = <span class="built_in">avformat_open_input</span>(&amp;pFmtCtx,src,<span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span>(ret &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">av_log</span>(<span class="literal">NULL</span>, AV_LOG_ERROR, <span class="string">&quot;%s\n&quot;</span>,<span class="built_in">av_err2str</span>(ret));</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//3.从多媒体文件中找到视频流</span></span><br><span class="line">    idx = <span class="built_in">av_find_best_stream</span>(pFmtCtx, AVMEDIA_TYPE_VIDEO, <span class="number">-1</span>, <span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(idx &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">av_log</span>(pFmtCtx, AV_LOG_ERROR, <span class="string">&quot;Does not include video&quot;</span>);</span><br><span class="line">        <span class="keyword">goto</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//4.打开目的文件到上下文</span></span><br><span class="line">    oFmtCtx = <span class="built_in">avformat_alloc_context</span>();</span><br><span class="line">    <span class="keyword">if</span>(!oFmtCtx)&#123;</span><br><span class="line">        <span class="built_in">av_log</span>(<span class="literal">NULL</span>, AV_LOG_ERROR, <span class="string">&quot;NO Memory!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">goto</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    outFmt = <span class="built_in">av_guess_format</span>(<span class="literal">NULL</span>, dst, <span class="literal">NULL</span>);</span><br><span class="line">    oFmtCtx-&gt;oformat =outFmt;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//5.为目的文件创建一个新的视频流</span></span><br><span class="line">    outStream = <span class="built_in">avformat_new_stream</span>(oFmtCtx, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//6.设置输出视频参数</span></span><br><span class="line">    inStream = pFmtCtx-&gt;streams[idx];</span><br><span class="line">    <span class="built_in">avcodec_parameters_copy</span>(outStream-&gt;codecpar, inStream-&gt;codecpar);</span><br><span class="line">    outStream-&gt;codecpar-&gt;codec_tag = <span class="number">0</span>;<span class="comment">//设置为0的话，会自动适配合适的编解码器</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//绑定</span></span><br><span class="line">    ret = <span class="built_in">avio_open2</span>(&amp;oFmtCtx-&gt;pb, dst, AVIO_FLAG_WRITE, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span>(ret &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">av_log</span>(oFmtCtx, AV_LOG_ERROR, <span class="string">&quot;%s&quot;</span>, <span class="built_in">av_err2str</span>(ret));</span><br><span class="line">        <span class="keyword">goto</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//7.写多媒体文件头到目的文件</span></span><br><span class="line">    ret = <span class="built_in">avformat_write_header</span>(oFmtCtx, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span>(ret &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">av_log</span>(oFmtCtx, AV_LOG_ERROR, <span class="string">&quot;%s&quot;</span>, <span class="built_in">av_err2str</span>(ret));</span><br><span class="line">        <span class="keyword">goto</span> _ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//8.从多媒体文件中读出视频数据到目的文件中</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">av_read_frame</span>(pFmtCtx, &amp;pkt)  &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(pkt.stream_index == idx)&#123;<span class="comment">//判断是否是要读取的音频帧</span></span><br><span class="line">            pkt.pts = <span class="built_in">av_rescale_q_rnd</span>(pkt.pts, inStream-&gt;time_base, outStream-&gt;time_base, (AV_ROUND_INF | AV_ROUND_PASS_MINMAX));</span><br><span class="line">            pkt.dts = <span class="built_in">av_rescale_q_rnd</span>(pkt.dts, inStream-&gt;time_base, outStream-&gt;time_base, (AV_ROUND_INF | AV_ROUND_PASS_MINMAX));<span class="comment">//视频的dts和pts可能是不同的</span></span><br><span class="line">            pkt.duration = <span class="built_in">av_rescale_q</span>(pkt.duration, inStream-&gt;time_base, outStream-&gt;time_base);</span><br><span class="line">            pkt.stream_index = <span class="number">0</span>;</span><br><span class="line">            pkt.pos = <span class="number">-1</span>;<span class="comment">//设置为-1时，则会自动计算</span></span><br><span class="line">            <span class="built_in">av_interleaved_write_frame</span>(oFmtCtx, &amp;pkt);</span><br><span class="line">            <span class="built_in">av_packet_unref</span>(&amp;pkt);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//9.写多媒体文件尾到文件中</span></span><br><span class="line">    <span class="built_in">av_write_trailer</span>(oFmtCtx);</span><br><span class="line">    </span><br><span class="line">     <span class="comment">//10.将申请的资源释放掉</span></span><br><span class="line">_ERROR:</span><br><span class="line">    <span class="keyword">if</span>(pFmtCtx)&#123;</span><br><span class="line">        <span class="built_in">avformat_close_input</span>(&amp;pFmtCtx);</span><br><span class="line">        pFmtCtx = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(oFmtCtx-&gt;pb)&#123;</span><br><span class="line">        <span class="built_in">avio_close</span>(oFmtCtx-&gt;pb);<span class="comment">//关闭目标文件</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(oFmtCtx)&#123;</span><br><span class="line">        <span class="built_in">avformat_free_context</span>(oFmtCtx);</span><br><span class="line">        oFmtCtx = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello ffmpeg&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将代码文件保存成extra_audio.c文件，并在当前路径下建立一个build.sh文件，打开该文件后，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">clang -g -o extra_video extra_video.c `pkg-config --libs --cflags libavutil libavformat libavcodec`</span><br></pre></td></tr></table></figure>
+<p>保存退出后，在当前路径下打开命令行窗口，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build.sh</span><br></pre></td></tr></table></figure>
+<p>如果没有报错信息出现，那么就证明我们完成了该文件的编译工作，接着就能在当前路径上看到我们生成的extra_audio可执行程序文件和extra_audio.dSYM这个具备调试信息的目标文件。</p>
+<p>接着我们找个具备音频信息的文件来进行演示，我们可以先用ffplay播放一下这个文件，以下是我这边通过ffplay播放该文件时，命令行窗口输出的信息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Input #0, mov,mp4,m4a,3gp,3g2,mj2, from &#x27;1.mp4&#x27;:</span><br><span class="line">  Metadata:</span><br><span class="line">    major_brand     : isom</span><br><span class="line">    minor_version   : 512</span><br><span class="line">    compatible_brands: isomiso2avc1mp41</span><br><span class="line">    comment         : vid:v0200fg10000cbuq3hjc77ua8dieuid0</span><br><span class="line">    encoder         : Lavf58.45.100</span><br><span class="line">  Duration: 00:00:35.32, start: 0.000000, bitrate: 2348 kb/s</span><br><span class="line">    Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709), 720x1280 [SAR 1:1 DAR 9:16], 2217 kb/s, 29.83 fps, 30 tbr, 15360 tbn, 60 tbc (default)</span><br><span class="line">    Metadata:</span><br><span class="line">      handler_name    : VideoHandler</span><br><span class="line">    Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 128 kb/s (default)</span><br><span class="line">    Metadata:</span><br><span class="line">      handler_name    : SoundHandler</span><br><span class="line">   7.79 A-V: -0.024 fd=   6 aq=   23KB vq=  247KB sq=    0B f=0/0   </span><br></pre></td></tr></table></figure>
+<p>可以看到该文件一共有两路流。<br>一路上视频流（h264）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream #0:0(und): Video: h264 (High)</span><br></pre></td></tr></table></figure>
+<p>一路是音频流(aac)：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream #0:1(und): Audio: aac (LC)</span><br></pre></td></tr></table></figure>
+
+
+<p>此时我们在命令行窗口输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">code .</span><br></pre></td></tr></table></figure>
+<p>打开vscode后，在lauch.json文件中输入：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// 使用 IntelliSense 了解相关属性。 </span></span><br><span class="line">    <span class="comment">// 悬停以查看现有属性的描述。</span></span><br><span class="line">    <span class="comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;(lldb) 启动&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppdbg&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/$&#123;fileBasenameNoExtension&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="string">&quot;/Users/wujianqiang/Desktop/1.mp4&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="string">&quot;1.h264&quot;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;lldb&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>我们要抽取的1.mp4放在&#x2F;Users&#x2F;wujianqiang&#x2F;Desktop路径下，而抽取后生成的文件起名为1.h264</p>
+<p>设置好后，我们启动程序，此时就可以进行代码的调试了。</p>
+<p>此时，我们将最终生成的1.h264文件，通过ffplay进行播放时，命令行输出的窗口信息为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input #0, h264, from &#x27;/Users/wujianqiang/Desktop/LearningFFmpegNotes/ectra_video/1.h264&#x27;:</span><br><span class="line">  Duration: N/A, bitrate: N/A</span><br><span class="line">    Stream #0:0: Video: h264 (High), yuv420p(tv, bt709, progressive), 720x1280 [SAR 1:1 DAR 9:16], 30 fps, 30 tbr, 1200k tbn, 60 tbc</span><br><span class="line">    nan M-V:    nan fd=   0 aq=    0KB vq=  229KB sq=    0B f=0/0 </span><br></pre></td></tr></table></figure>
+
+<p>此时我们与原视频信息进行对比后可以发现，由于1.h264是不带视频信息的视频压缩数据，因此不具备原始视频的相关信息，至于为什么1.h264文件的帧率是30帧，那是因为ffmpeg默认的h264输出的视频帧率是30帧，如果将</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE/">http://example.com/2022/11/25/如何通过FFmpeg抽取视频数据/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/7.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/01/10/Nvida%E7%9A%84Video_Codec_SDK%E4%B8%AD%E5%8F%82%E8%80%83%E4%BE%8B%E7%A8%8B%E7%9A%84%E8%AE%B2%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%BC%96%E8%AF%91Sample%E6%A0%B7%E4%BE%8B/"><img class="prev-cover" src="/img/IronMan/5.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Nvida的Video_Codec_SDK中参考例程的讲解（一）：编译Sample样例</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E9%9F%B3%E9%A2%91%E6%95%B0%E6%8D%AE/"><img class="next-cover" src="/img/IronMan/6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">如何通过FFmpeg抽取音频数据</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/01/12/Nvida%E7%9A%84Video_Codec_SDK%E4%B8%AD%E5%8F%82%E8%80%83%E4%BE%8B%E7%A8%8B%E7%9A%84%E8%AE%B2%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%90%AD%E5%BB%BAAppDecGL%E7%9A%84%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/" title="Nvida的Video_Codec_SDK中参考例程的讲解（二）：搭建AppDecGL的调试环境"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nvida的Video_Codec_SDK中参考例程的讲解（二）：搭建AppDecGL的调试环境"/></a><div class="content"><a class="title" href="/2023/01/12/Nvida%E7%9A%84Video_Codec_SDK%E4%B8%AD%E5%8F%82%E8%80%83%E4%BE%8B%E7%A8%8B%E7%9A%84%E8%AE%B2%E8%A7%A3%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E6%90%AD%E5%BB%BAAppDecGL%E7%9A%84%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83/" title="Nvida的Video_Codec_SDK中参考例程的讲解（二）：搭建AppDecGL的调试环境">Nvida的Video_Codec_SDK中参考例程的讲解（二）：搭建AppDecGL的调试环境</a><time datetime="2023-01-11T16:00:00.000Z" title="发表于 2023-01-12 00:00:00">2023-01-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/01/10/Nvida%E7%9A%84Video_Codec_SDK%E4%B8%AD%E5%8F%82%E8%80%83%E4%BE%8B%E7%A8%8B%E7%9A%84%E8%AE%B2%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%BC%96%E8%AF%91Sample%E6%A0%B7%E4%BE%8B/" title="Nvida的Video_Codec_SDK中参考例程的讲解（一）：编译Sample样例"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Nvida的Video_Codec_SDK中参考例程的讲解（一）：编译Sample样例"/></a><div class="content"><a class="title" href="/2023/01/10/Nvida%E7%9A%84Video_Codec_SDK%E4%B8%AD%E5%8F%82%E8%80%83%E4%BE%8B%E7%A8%8B%E7%9A%84%E8%AE%B2%E8%A7%A3%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E7%BC%96%E8%AF%91Sample%E6%A0%B7%E4%BE%8B/" title="Nvida的Video_Codec_SDK中参考例程的讲解（一）：编译Sample样例">Nvida的Video_Codec_SDK中参考例程的讲解（一）：编译Sample样例</a><time datetime="2023-01-09T16:00:00.000Z" title="发表于 2023-01-10 00:00:00">2023-01-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE/" title="如何通过FFmpeg抽取视频数据"><img src="/img/IronMan/7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何通过FFmpeg抽取视频数据"/></a><div class="content"><a class="title" href="/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E8%A7%86%E9%A2%91%E6%95%B0%E6%8D%AE/" title="如何通过FFmpeg抽取视频数据">如何通过FFmpeg抽取视频数据</a><time datetime="2022-11-24T16:00:00.000Z" title="发表于 2022-11-25 00:00:00">2022-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E9%9F%B3%E9%A2%91%E6%95%B0%E6%8D%AE/" title="如何通过FFmpeg抽取音频数据"><img src="/img/IronMan/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何通过FFmpeg抽取音频数据"/></a><div class="content"><a class="title" href="/2022/11/25/%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87FFmpeg%E6%8A%BD%E5%8F%96%E9%9F%B3%E9%A2%91%E6%95%B0%E6%8D%AE/" title="如何通过FFmpeg抽取音频数据">如何通过FFmpeg抽取音频数据</a><time datetime="2022-11-24T16:00:00.000Z" title="发表于 2022-11-25 00:00:00">2022-11-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/12/%E5%A4%9A%E5%AA%92%E4%BD%93%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="多媒体基本概念"><img src="/img/IronMan/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="多媒体基本概念"/></a><div class="content"><a class="title" href="/2022/11/12/%E5%A4%9A%E5%AA%92%E4%BD%93%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="多媒体基本概念">多媒体基本概念</a><time datetime="2022-11-11T16:00:00.000Z" title="发表于 2022-11-12 00:00:00">2022-11-12</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
