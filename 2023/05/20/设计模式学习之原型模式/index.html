@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>吴健强のBLOG | 吴健强のBLOG</title><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="介绍原型模式是所有创建型模式中最特殊的一个，它的一大特点就是具体的创建过程，是由对象本身提供，这样我们在很多的场景下可以很方便的快速构建新的对象。但是在实际的工作中,对于原型模式使用其实并不多见，而原型模式的一大特定就是用Clone方法来实现深拷贝. 因此原型模式的适用场景所具备的条件如下:  创建新对象成本较大(通过原型模式,可以利用已有的对象来快速克隆出新的对象)。 如果系统要保存对象的状态，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="吴健强のBLOG">
+<meta property="og:url" content="http://example.com/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="介绍原型模式是所有创建型模式中最特殊的一个，它的一大特点就是具体的创建过程，是由对象本身提供，这样我们在很多的场景下可以很方便的快速构建新的对象。但是在实际的工作中,对于原型模式使用其实并不多见，而原型模式的一大特定就是用Clone方法来实现深拷贝. 因此原型模式的适用场景所具备的条件如下:  创建新对象成本较大(通过原型模式,可以利用已有的对象来快速克隆出新的对象)。 如果系统要保存对象的状态，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/6.jpg">
+<meta property="article:published_time" content="2023-05-20T07:29:38.000Z">
+<meta property="article:modified_time" content="2023-05-20T07:29:38.000Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/6.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '吴健强のBLOG',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-20 15:29:38'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/6.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-20T07:29:38.000Z" title="发表于 2023-05-20 15:29:38">2023-05-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-05-20T07:29:38.000Z" title="更新于 2023-05-20 15:29:38">2023-05-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>原型模式是所有创建型模式中最特殊的一个，它的一大特点就是具体的创建过程，是由对象本身提供，这样我们在很多的场景下可以很方便的快速构建新的对象。但是在实际的工作中,对于原型模式使用其实并不多见，而原型模式的一大特定就是用Clone方法来实现深拷贝.</p>
+<p>因此原型模式的适用场景所具备的条件如下:</p>
+<ul>
+<li>创建新对象成本较大(通过原型模式,可以利用已有的对象来快速克隆出新的对象)。</li>
+<li>如果系统要保存对象的状态，而对象的状态变化很小，或者对象本身占用的内存较小的时候，也可以使用原型模式配合备忘录模式来应用。相反，如果对象的状态变化很大，或者对象占用的内存很大，那么采用状态模式会比原型模式更好。</li>
+<li>需要避免使用<font color = red>&gt;分层次</font>的工厂类来创建分层次的对象，并且类的实例对象只有一个或很少的几个组合状态，通过复制原型对象得到新实例可能比使用构造函数创建一个新实例更加方便。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>如果创建新的对象比较复杂，可以利用原型模式简化对象的创建过程，同时也能够提高效率。</li>
+<li>简化对象的创建，无需理会创建过程。</li>
+<li>可以在程序运行时（对象属性发生了变化）获得一份内容相同的实例，他们之间不会相互干扰。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>在实现深拷贝时可能需要比较复杂的代码。</li>
+<li>需要为每一个类配备一个克隆方法，而且该克隆方法需要对类的功能进行通盘考虑，这对全新的类来说不是很难，但对已有的类进行改造时，不一定是件容易的事，必须修改其源代码，违背了“开闭原则”。</li>
+</ul>
+<h1 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h1><p>这里,我们举例说明一下.假设我们现在要设计一个ai算法对外接口,整体而言就三个接口</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">AIAlgorithmsType</span></span><br><span class="line">&#123;</span><br><span class="line">    NONE,</span><br><span class="line">    Nakedeye3D,</span><br><span class="line">    NakedeyeVR</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">CreatAIAlgorithms</span><span class="params">(<span class="keyword">enum</span> AIAlgorithmsType type,<span class="type">wchar_t</span>* path)</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">SetAIAlgorithmsInputData</span><span class="params">(<span class="type">void</span>* InputData,<span class="type">int</span> width,<span class="type">int</span> height)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> *<span class="title">GetAIAlgorithmsResult</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>对于应用层来说,当前有一帧视频帧数据需要进行处理,那么只需要设置AIAlgorithmsType的类型就可以调用对应的ai算法,来得到对应是处理结果(path是算法库所在的路径,现在默认所有的算法库都放在这个路径下),此时应用层的需求构建出一条ai算法链路,将一帧视频帧数据作为第一个ai算法的输入,并将第一高ai算法输出的结果作为第二个ai算法的输入,以此类推,构建出一条ai算法特效的链路出来,同时GetAIAlgorithmsResult接口的输入参数UseAIAlgorithms来控制是否调用该算法进行特效处理.</p>
+<p>对于这样的需求,我们一般会想到创建一个类,然后有多少算法就创建多少class,再将数据送进去处理得到每个算法的处理结果,如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AIAlgorithms</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	 <span class="built_in">AIAlgorithms</span>()&#123;&#125;</span><br><span class="line">	 ~<span class="built_in">AIAlgorithms</span>()&#123;&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function"><span class="type">bool</span> <span class="title">CreatAIAlgorithms</span><span class="params">(<span class="keyword">enum</span> AIAlgorithmsType type,<span class="type">wchar_t</span>* path)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">SetAIAlgorithmsInputData</span><span class="params">(<span class="type">void</span>* InputData,<span class="type">int</span> width,<span class="type">int</span> height)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> *<span class="title">GetAIAlgorithmsResult</span><span class="params">(<span class="type">bool</span> UseAIAlgorithms)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//创建一张黑色的视频帧(rgba全为0),并构建Nakedeye3D+NakedeyeVR的链路,将该帧数据先作为Nakedeye3D的输入参数,并将得到的结果作为NakedeyeVR的输入参数</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span>* InputData = <span class="keyword">new</span> <span class="type">unsigned</span> <span class="type">char</span> [width*height*<span class="number">4</span>]();</span><br><span class="line">    AIAlgorithms Nakedeye3DAIAlgorithms;</span><br><span class="line">    Nakedeye3DAIAlgorithms.<span class="built_in">CreatAIAlgorithms</span>(Nakedeye3D,path);</span><br><span class="line">    Nakedeye3DAIAlgorithms.<span class="built_in">SetAIAlgorithmsInputData</span>((<span class="type">void</span>*)InputData, width, height);</span><br><span class="line">    <span class="type">void</span> *pNakedeye3DAIAlgorithmsResult =  Nakedeye3DAIAlgorithms.<span class="built_in">GetAIAlgorithmsResult</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    AIAlgorithms NakedeyeVRAIAlgorithms;</span><br><span class="line">    NakedeyeVRAIAlgorithms.<span class="built_in">CreatAIAlgorithms</span>(NakedeyeVR,path);</span><br><span class="line">    NakedeyeVRAIAlgorithms.<span class="built_in">SetAIAlgorithmsInputData</span>(pNakedeye3DAIAlgorithmsResult, width, height);</span><br><span class="line">    <span class="type">void</span> *pNakedeyeVRAIAlgorithmsResult =  NakedeyeVRAIAlgorithms.<span class="built_in">GetAIAlgorithmsResult</span>(<span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果写成这样的话,你会发现每次在链路中新增一个新的算法,都需要重新一一个个设置参数,并且后面如果算法接口修改了输入参数的话,又得对每个实例对象一个个改,整个工作量非常大,而实际上对象的状态变化很小,他们之间的区别就只是设置的AIAlgorithmsType和InputData的时候不同罢了,完全没必要每次设计这么多参数,因此我们这时候就可以用到原型模式,来进行对象的快速copy创建.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AIAlgorithmsPrototype</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="built_in">AIAlgorithmsPrototype</span>()=<span class="keyword">default</span>;<span class="comment">//禁止默认构造函数</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">AIAlgorithmsPrototype</span>(<span class="keyword">enum</span> AIAlgorithmsType type,<span class="type">wchar_t</span>* path,<span class="type">void</span>* InputData,<span class="type">int</span> width,<span class="type">int</span> height,<span class="type">bool</span> UseAIAlgorithms)</span><br><span class="line">        :m_emType&#123;type&#125;</span><br><span class="line">        ,m_pResourcePath&#123;path&#125;</span><br><span class="line">        ,m_pInputData&#123;InputData&#125;</span><br><span class="line">        ,m_width&#123;width&#125;</span><br><span class="line">        ,m_height&#123;height&#125;</span><br><span class="line">        ,<span class="built_in">m_UseAIAlgorithms</span>(UseAIAlgorithms)</span><br><span class="line">        ,<span class="built_in">m_pOutputData</span>(<span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">AIAlgorithmsPrototype</span>()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> *<span class="title">GetAIAlgorithmsResult</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> m_pOutputData;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> AIAlgorithmsPrototype* <span class="title">Clone</span><span class="params">()</span> </span>=<span class="number">0</span>;</span><br><span class="line">	</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"></span><br><span class="line">    AIAlgorithmsType m_emType);<span class="comment">//算法类型</span></span><br><span class="line">    <span class="type">wchar_t</span>* m_pResourcePath;  <span class="comment">//算法库所在路径</span></span><br><span class="line">    <span class="type">void</span>* m_pInputData; <span class="comment">//输入的rgba帧数据所在内存地址</span></span><br><span class="line">    <span class="type">int</span> m_width;<span class="comment">//帧的宽度</span></span><br><span class="line">    <span class="type">int</span> m_height;<span class="comment">//帧的高度</span></span><br><span class="line">    <span class="type">bool</span> m_UseAIAlgorithms;<span class="comment">//是否使用该ai算法</span></span><br><span class="line">    <span class="type">void</span>* m_pOutputData; <span class="comment">//输出的rgba帧数据所在内存地址</span></span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AIAlgorithmsPlugins</span> : <span class="keyword">public</span> AIAlgorithmsPrototype</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> </span><br><span class="line">	<span class="built_in">AIAlgorithmsPlugins</span>()=<span class="keyword">default</span>;<span class="comment">//禁止默认构造函数</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">AIAlgorithmsPlugins</span>(<span class="keyword">enum</span> AIAlgorithmsType type, <span class="type">wchar_t</span>* path, <span class="type">void</span>* InputData,<span class="type">int</span> width,<span class="type">int</span> height, <span class="type">bool</span> UseAIAlgorithms)  <span class="comment">//构造函数  </span></span><br><span class="line">	&#123;</span><br><span class="line">        std::cout &lt;&lt; <span class="string">&quot;当前创建的算法为:&quot;</span> &lt;&lt; type &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">CreatAIAlgorithms</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//根据算法名称和算法库路径加载对应的算法</span></span><br><span class="line">        <span class="type">bool</span> ret = AlgorithmsPlugin::<span class="built_in">LoadAlgorithmsLibrary</span>(m_emType, m_pResourcePath);</span><br><span class="line">        <span class="keyword">if</span> (ret != <span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Error:BAlgorithmsPlugin::LoadAlgorithmsLibrary %d Fail !!!\n&quot;</span>,m_emType);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="type">bool</span> ret = AlgorithmsPlugin::<span class="built_in">Process</span>(m_pInputData, m_width,m_height,m_pOutputData);</span><br><span class="line">        <span class="keyword">if</span> (ret != <span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Error:AlgorithmsPlugin::Process Fail !!!\n&quot;</span>);</span><br><span class="line">            m_pOutputData = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetAIAlgorithmsType</span><span class="params">(<span class="keyword">enum</span> AIAlgorithmsType type)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_emType = type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">SetAIAlgorithmsInputData</span><span class="params">(<span class="type">void</span>* InputData)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_pInputData = InputData;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">AIAlgorithmsPlugins</span>(<span class="type">const</span> AIAlgorithmsPlugins &amp;rhs) <span class="comment">//拷贝构造函数  </span></span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">//不需要修改的类成员变量</span></span><br><span class="line">        m_pResourcePath = rhs.m_pResourcePath;</span><br><span class="line">        m_width = rhs.m_width;</span><br><span class="line">        m_height = rhs.m_height;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//需要修改的类成员变量</span></span><br><span class="line">        m_emType = AIAlgorithmsType::NONE;</span><br><span class="line">        m_pInputData = <span class="literal">NULL</span>;</span><br><span class="line">        m_UseAIAlgorithms = <span class="literal">true</span>;</span><br><span class="line">        m_pOutputData = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">                </span><br><span class="line">	AIAlgorithmsPlugins&amp; <span class="keyword">operator</span>=(<span class="type">const</span> AIAlgorithmsPlugins&amp; rhs)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span> == &amp;rhs)</span><br><span class="line">			<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//不需要修改的类成员变量</span></span><br><span class="line">        m_pResourcePath = rhs.m_pResourcePath;</span><br><span class="line">        m_width = rhs.m_width;</span><br><span class="line">        m_height = rhs.m_height;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//需要修改的类成员变量</span></span><br><span class="line">        m_emType = AIAlgorithmsType::NONE;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(m_pInputData !=<span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span>[] m_pInputData;</span><br><span class="line">            m_pInputData = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        m_UseAIAlgorithms = <span class="literal">true</span>;</span><br><span class="line">        m_pOutputData = <span class="literal">NULL</span>;</span><br><span class="line">		</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	<span class="function">AIAlgorithmsPlugins* <span class="title">Clone</span><span class="params">()</span> <span class="keyword">override</span>	</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">AIAlgorithmsPlugins</span>(<span class="keyword">this</span>-&gt;m_emType, <span class="keyword">this</span>-&gt;m_pResourcePath,</span><br><span class="line">            <span class="keyword">this</span>-&gt;m_pInputData, <span class="keyword">this</span>-&gt;m_width, <span class="keyword">this</span>-&gt;m_height, <span class="keyword">this</span>-&gt;m_UseAIAlgorithms);</span><br><span class="line">	&#125;</span><br><span class="line"> </span><br><span class="line">	 ~<span class="built_in">AIAlgorithmsPlugins</span>()</span><br><span class="line">	 &#123;</span><br><span class="line">		<span class="keyword">if</span>(m_pInputData !=<span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span>[] m_pInputData;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(m_pOutputData !=<span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span>[] m_pOutputData;</span><br><span class="line">        &#125;</span><br><span class="line">	 &#125;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     </span><br><span class="line">    <span class="type">int</span> width = <span class="number">1920</span>;</span><br><span class="line">    <span class="type">int</span> height = <span class="number">1080</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span>* InputData = <span class="keyword">new</span> <span class="type">unsigned</span> <span class="type">char</span> [width*height*<span class="number">4</span>]();</span><br><span class="line"></span><br><span class="line">	AIAlgorithmsPlugins *pNakedeye3DAIAlgorithms = <span class="keyword">new</span> <span class="built_in">AIAlgorithmsPlugins</span>(Nakedeye3D, path, InputData, width, height,<span class="literal">true</span>);</span><br><span class="line">    <span class="type">void</span> *pNakedeye3DAIAlgorithmsResult = pNakedeye3DAIAlgorithms-&gt;<span class="built_in">GetAIAlgorithmsResult</span>();</span><br><span class="line"> </span><br><span class="line">	AIAlgorithmsPlugins *pNakedeyeVRAIAlgorithms = pNakedeye3DAIAlgorithms-&gt;<span class="built_in">Clone</span>();</span><br><span class="line">    pNakedeyeVRAIAlgorithms-&gt;<span class="built_in">SetAIAlgorithmsType</span>(NakedeyeVR)</span><br><span class="line">    pNakedeyeVRAIAlgorithms-&gt;<span class="built_in">SetAIAlgorithmsInputData</span>(pNakedeye3DAIAlgorithmsResult);</span><br><span class="line">	<span class="type">void</span> *pNakedeyeVRAIAlgorithmsResult = pNakedeyeVRAIAlgorithms-&gt;<span class="built_in">GetAIAlgorithmsResult</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">delete</span> pNakedeye3DAIAlgorithms;</span><br><span class="line">	pNakedeye3DAIAlgorithms = <span class="literal">NULL</span>;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>有同学可能会说，直接调用拷贝构造函数是不是就可以了，何必在外层封装一层 Clone？实际上，这是有本质区别的。敲黑板，重点来了！</p>
+<p>原型模式实现的是一个Clone 接口，注意是接口，也就是基于多态的 Clone 虚函数。也就是说原型模式能够通过基类指针来复制派生类对象。拷贝构造函数完不成这样的任务。在继承场景下，Clone 函数可以定义为虚函数。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/">http://example.com/2023/05/20/设计模式学习之原型模式/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/6.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/05/20/Ubuntu%E4%B8%8B%E7%BC%96%E8%AF%91Linux%E7%89%88%E6%9C%ACOpenCV%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4/"><img class="prev-cover" src="/img/IronMan/6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/"><img class="next-cover" src="/img/IronMan/6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">26</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B7%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">样例</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%88%9B%E5%BB%BA%E5%9E%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93%E5%92%8C%E6%A2%B3%E7%90%86/" title="无题"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%88%9B%E5%BB%BA%E5%9E%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93%E5%92%8C%E6%A2%B3%E7%90%86/" title="无题">无题</a><time datetime="2023-05-20T07:38:27.000Z" title="发表于 2023-05-20 15:38:27">2023-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/20/Ubuntu%E4%B8%8B%E7%BC%96%E8%AF%91Linux%E7%89%88%E6%9C%ACOpenCV%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4/" title="无题"><img src="/img/IronMan/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2023/05/20/Ubuntu%E4%B8%8B%E7%BC%96%E8%AF%91Linux%E7%89%88%E6%9C%ACOpenCV%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4/" title="无题">无题</a><time datetime="2023-05-20T07:29:43.000Z" title="发表于 2023-05-20 15:29:43">2023-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="无题"><img src="/img/IronMan/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="无题">无题</a><time datetime="2023-05-20T07:29:38.000Z" title="发表于 2023-05-20 15:29:38">2023-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" title="无题"><img src="/img/IronMan/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/" title="无题">无题</a><time datetime="2023-05-20T07:29:35.000Z" title="发表于 2023-05-20 15:29:35">2023-05-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="无题"><img src="/img/IronMan/7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2023/05/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="无题">无题</a><time datetime="2023-05-20T07:29:32.000Z" title="发表于 2023-05-20 15:29:32">2023-05-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/6.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
