@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>OpenGL学习笔记（一）：安装Ubuntu开发环境 | 吴健强のBLOG</title><meta name="keywords" content="OpenGL"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="命令行输入： 1234sudo apt-get install build-essential   #编译器与基本的函式库sudo apt-get install libgl1-mesa-dev   #安装OpenGL Librarysudo apt-get install libglu1-mesa-dev  #安装OpenGL Utilities,OpenGL Utilities是一组建构于 O">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL学习笔记（一）：安装Ubuntu开发环境">
+<meta property="og:url" content="http://example.com/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85Ubuntu%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="命令行输入： 1234sudo apt-get install build-essential   #编译器与基本的函式库sudo apt-get install libgl1-mesa-dev   #安装OpenGL Librarysudo apt-get install libglu1-mesa-dev  #安装OpenGL Utilities,OpenGL Utilities是一组建构于 O">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/7.jpg">
+<meta property="article:published_time" content="2023-06-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-04T16:04:58.210Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/7.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85Ubuntu%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OpenGL学习笔记（一）：安装Ubuntu开发环境',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-06-05 00:04:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OpenGL学习笔记（一）：安装Ubuntu开发环境</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-03T16:00:00.000Z" title="发表于 2023-06-04 00:00:00">2023-06-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-06-04T16:04:58.210Z" title="更新于 2023-06-05 00:04:58">2023-06-05</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OpenGL学习笔记（一）：安装Ubuntu开发环境"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>命令行输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential   #编译器与基本的函式库</span><br><span class="line">sudo apt-get install libgl1-mesa-dev   #安装OpenGL Library</span><br><span class="line">sudo apt-get install libglu1-mesa-dev  #安装OpenGL Utilities,OpenGL Utilities是一组建构于 OpenGL Library 之上的工具组</span><br><span class="line">sudo apt-get install freeglut3-dev  #如果报错的话就改成输入：sudo apt-get install freeglut3-dev</span><br></pre></td></tr></table></figure>
+
+<p>测试Demo如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Test.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;GL/glut.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ColoredVertex(c, v) do&#123; glColor3fv(c); glVertex3fv(v); &#125;while(0)</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> angle = <span class="number">0</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">int</span> rotateMode = <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myDisplay</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">static</span> <span class="type">int</span> list = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (list == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		GLfloat</span><br><span class="line">			PointA[] = &#123; <span class="number">0.5f</span>, <span class="number">0.5f</span>, <span class="number">-0.5f</span> &#125;,</span><br><span class="line">			PointB[] = &#123; <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">-0.5f</span> &#125;,</span><br><span class="line">			PointC[] = &#123; <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">-0.5f</span> &#125;,</span><br><span class="line">			PointD[] = &#123; <span class="number">-0.5f</span>, <span class="number">0.5f</span>, <span class="number">-0.5f</span> &#125;,</span><br><span class="line">			PointE[] = &#123; <span class="number">0.5f</span>, <span class="number">0.5f</span>, <span class="number">0.5f</span> &#125;,</span><br><span class="line">			PointF[] = &#123; <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.5f</span> &#125;,</span><br><span class="line">			PointG[] = &#123; <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.5f</span> &#125;,</span><br><span class="line">			PointH[] = &#123; <span class="number">-0.5f</span>, <span class="number">0.5f</span>, <span class="number">0.5f</span> &#125;;</span><br><span class="line">		GLfloat</span><br><span class="line">			ColorA[] = &#123; <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span> &#125;,</span><br><span class="line">			ColorB[] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span> &#125;,</span><br><span class="line">			ColorC[] = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> &#125;,</span><br><span class="line">			ColorD[] = &#123; <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span> &#125;,</span><br><span class="line">			ColorE[] = &#123; <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span> &#125;,</span><br><span class="line">			ColorF[] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span> &#125;,</span><br><span class="line">			ColorG[] = &#123; <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span> &#125;,</span><br><span class="line">			ColorH[] = &#123; <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span> &#125;;</span><br><span class="line"> </span><br><span class="line">		list = <span class="built_in">glGenLists</span>(<span class="number">1</span>);</span><br><span class="line">		<span class="built_in">glNewList</span>(list, GL_COMPILE);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 面1</span></span><br><span class="line">		<span class="built_in">glBegin</span>(GL_POLYGON);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorA, PointA);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorE, PointE);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorH, PointH);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorD, PointD);</span><br><span class="line">		<span class="built_in">glEnd</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 面2</span></span><br><span class="line">		<span class="built_in">glBegin</span>(GL_POLYGON);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorD, PointD);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorC, PointC);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorB, PointB);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorA, PointA);</span><br><span class="line">		<span class="built_in">glEnd</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 面3</span></span><br><span class="line">		<span class="built_in">glBegin</span>(GL_POLYGON);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorA, PointA);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorB, PointB);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorF, PointF);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorE, PointE);</span><br><span class="line">		<span class="built_in">glEnd</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 面4</span></span><br><span class="line">		<span class="built_in">glBegin</span>(GL_POLYGON);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorE, PointE);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorH, PointH);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorG, PointG);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorF, PointF);</span><br><span class="line">		<span class="built_in">glEnd</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 面5</span></span><br><span class="line">		<span class="built_in">glBegin</span>(GL_POLYGON);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorF, PointF);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorB, PointB);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorC, PointC);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorG, PointG);</span><br><span class="line">		<span class="built_in">glEnd</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 面6</span></span><br><span class="line">		<span class="built_in">glBegin</span>(GL_POLYGON);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorG, PointG);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorH, PointH);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorD, PointD);</span><br><span class="line">		<span class="built_in">ColoredVertex</span>(ColorC, PointC);</span><br><span class="line">		<span class="built_in">glEnd</span>();</span><br><span class="line">		<span class="built_in">glEndList</span>();</span><br><span class="line"> </span><br><span class="line">		<span class="built_in">glEnable</span>(GL_DEPTH_TEST);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 已经创建了显示列表，在每次绘制正四面体时将调用它</span></span><br><span class="line">	<span class="built_in">glClear</span>(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br><span class="line">	<span class="built_in">glPushMatrix</span>();</span><br><span class="line">	<span class="built_in">glRotatef</span>(angle / <span class="number">10</span>, <span class="number">1</span>, <span class="number">0.5</span>, <span class="number">0.0</span>);</span><br><span class="line">	<span class="built_in">glCallList</span>(list);</span><br><span class="line">	<span class="built_in">glPopMatrix</span>();</span><br><span class="line">	<span class="built_in">glutSwapBuffers</span>();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myIdle</span><span class="params">(<span class="type">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	++angle;</span><br><span class="line">	<span class="keyword">if</span> (angle &gt;= <span class="number">3600.0f</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		angle = <span class="number">0.0f</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">myDisplay</span>();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">glutInit</span>(&amp;argc, argv);</span><br><span class="line">	<span class="built_in">glutInitDisplayMode</span>(GLUT_RGBA | GLUT_DOUBLE);</span><br><span class="line">	<span class="built_in">glutInitWindowPosition</span>(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">	<span class="built_in">glutInitWindowSize</span>(<span class="number">700</span>, <span class="number">700</span>);</span><br><span class="line">	<span class="built_in">glutCreateWindow</span>(<span class="string">&quot;First OpenGL Program&quot;</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">glutDisplayFunc</span>(&amp;myDisplay);</span><br><span class="line">	<span class="built_in">glutIdleFunc</span>(&amp;myIdle);     <span class="comment">//空闲调用</span></span><br><span class="line"> </span><br><span class="line">	<span class="built_in">glutMainLoop</span>();</span><br><span class="line"> </span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存退出后，在当前test.cpp文件下进入命令行窗口，进行编译连接的生成．</p>
+<p>C++编译器编译生成输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ test.cpp -o test  -l GL -l GLU -l glut</span><br></pre></td></tr></table></figure>
+<p>C编译器编译生成输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc test.cpp -o test  -l GL -l GLU -l glut</span><br></pre></td></tr></table></figure>
+
+
+<p>编译成功会输出名为test的执行文件， 接下来可以执行test文件，输入.&#x2F;test，效果如下：<br><img src="/./picture/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1/%E6%90%AD%E5%BB%BAOpenGL%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83.png"></p>
+<p>在我们画出出色的效果之前，首先要做的就是创建一个OpenGL上下文(Context)和一个用于显示的窗口。然而，这些操作在每个系统上都是不一样的，OpenGL有意将这些操作抽象(Abstract)出去。这意味着我们不得不自己处理创建窗口，定义OpenGL上下文以及处理用户输入。幸运的是，有一些库已经提供了我们所需的功能，其中一部分是特别针对OpenGL的。这些库节省了我们书写操作系统相关代码的时间，提供给我们一个窗口和一个OpenGL上下文用来渲染。</p>
+<p>本文的OpenGL学习笔记是基于<a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io的linux学习笔记,因此,也根据learnopengl的教程要求,选择glad./">https://learnopengl-cn.github.io的Linux学习笔记，因此，也根据learnopengl的教程要求，选择GLAD．</a><br>glad 是继 gl3w，glew 之后，当前最新的用来访问 OpenGL 规范接口的第三方库。简单说 glad 是 glew 的升级版，就是说 glew 比较老，glad 比较新</p>
+<h1 id="编译GLEW库"><a href="#编译GLEW库" class="headerlink" title="编译GLEW库"></a>编译GLEW库</h1><p>输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/glfw/glfw.git</span><br></pre></td></tr></table></figure>
+<p>接着打开Cmake gui,完成build路径设置后，点击Configure<br><img src="/./picture/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1/Cmake%E6%9E%84%E5%BB%BAGLFW.png"><br>先设置CMAKE_INSTALL_PREFIX将生成的so库先放到当前的install文件夹中,CMAKE_BUILD_TYPE设置为Release.接着点击Generate进行生成<br>然后退出Cmake gui软件，进入到glfw文件夹的build文件夹中，继续打开命令行，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make -j 15 #我的电脑是20核的cpu，所以可以支持15个编译命令同时执行，如果不清楚的话就输入make就行，只是编译速度会慢一点</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p>接着我们再把install你面的文件copy出去</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ../install</span><br><span class="line">sudo cp include/* -r /usr/include</span><br><span class="line">sudo cp lib/libglfw3.a /usr/lib/</span><br></pre></td></tr></table></figure>
+<h1 id="编译GLAD库"><a href="#编译GLAD库" class="headerlink" title="编译GLAD库"></a>编译GLAD库</h1><p>因此我们先用Git下载GLAD源代码，并生成对应的libglad.so文件，输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/Dav1dde/glad.git</span><br><span class="line"></span><br><span class="line">cd glad</span><br><span class="line">git branch -a</span><br><span class="line">git checkout c</span><br><span class="line">git branch -a</span><br></pre></td></tr></table></figure>
+<p>成功切换后输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo cp include/* -r /usr/include</span><br><span class="line">gcc -fpic src/glad.c -c</span><br><span class="line">gcc -shared -Wl,-z,relro,-z,now -o libglad.so glad.o</span><br><span class="line">sudo cp libglad.so /usr/lib/</span><br></pre></td></tr></table></figure>
+<p>此时就完成了GLAD的安装啦</p>
+<p><font color = red>PS:当然如果你需要指定GLAD的安装版本的话</font>，那么可以进入GLAD<a target="_blank" rel="noopener" href="https://glad.dav1d.de/">在线服务</a></p>
+<p>将语言(Language)设置为 C &#x2F; C++，在 API 选项中，选择3.3 以上的 OpenGL(gl) 版本（我们的教程中将使用 3.3 版本，但更新的版本也能用）。之后将模式 (Profile) 设置为 Core，并且保证选中了生成加载器(Generate a loader) 选项。现在可以先（暂时）忽略扩展(Extensions)中的内容。都选择完之后，点击生成 (Generate) 按钮来生成库文件。</p>
+<p>GLAD 现在应该提供给你了一个 zip 压缩文件，点击glad.zip进行下载，解压后的glad文件夹包含两个头文件目录，和一个glad.c文件。<br>接着重复上面的步骤进行安装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd glad</span><br><span class="line">sudo cp include/* -r /usr/include</span><br><span class="line">gcc -fpic src/glad.c -c</span><br><span class="line">gcc -shared -Wl,-z,relro,-z,now -o libglad.so glad.o</span><br><span class="line">sudo cp libglad.so /usr/lib/</span><br></pre></td></tr></table></figure>
+
+<p>最后我们来测试一下上面的安装是否成功，下载LearnOpenGL仓库代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/JoeyDeVries/LearnOpenGL.git</span><br></pre></td></tr></table></figure>
+<p>接着输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd LearnOpenGL/src/1.getting_started/1.1.hello_window</span><br><span class="line">g++ ../../glad.c hello_window.cpp -o hello_window -l GL -l GLU -l glut -l glfw3 -l dl -l pthread </span><br><span class="line">./hello_window</span><br></pre></td></tr></table></figure>
+<p>如果出现一个黑色窗口，则代表OpenGL的开发环境搭建成功啦！！！</p>
+<p>接下来的章节，我们将通过学习LearnOpenGL中src文件夹里面的参考例程来学习OpenGL啦</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85Ubuntu%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">http://example.com/2023/06/04/OpenGL学习笔记（一）：安装Ubuntu开发环境/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/7.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/06/05/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%94%BB%E4%B8%80%E4%B8%AA%E4%B8%89%E8%A7%92%E5%BD%A2/"><img class="prev-cover" src="/img/IronMan/5.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">OpenGL学习笔记（三）：画一个三角形</div></div></a></div><div class="next-post pull-right"><a href="/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%94%BB%E4%B8%AA%E7%AA%97%E5%8F%A3%E7%95%8C%E9%9D%A2/"><img class="next-cover" src="/img/IronMan/7.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">OpenGL学习笔记（二）：画个窗口界面</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91GLEW%E5%BA%93"><span class="toc-number">1.</span> <span class="toc-text">编译GLEW库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%96%E8%AF%91GLAD%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">编译GLAD库</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/06/05/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%94%BB%E4%B8%80%E4%B8%AA%E4%B8%89%E8%A7%92%E5%BD%A2/" title="OpenGL学习笔记（三）：画一个三角形"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenGL学习笔记（三）：画一个三角形"/></a><div class="content"><a class="title" href="/2023/06/05/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E7%94%BB%E4%B8%80%E4%B8%AA%E4%B8%89%E8%A7%92%E5%BD%A2/" title="OpenGL学习笔记（三）：画一个三角形">OpenGL学习笔记（三）：画一个三角形</a><time datetime="2023-06-04T16:00:00.000Z" title="发表于 2023-06-05 00:00:00">2023-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85Ubuntu%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" title="OpenGL学习笔记（一）：安装Ubuntu开发环境"><img src="/img/IronMan/7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenGL学习笔记（一）：安装Ubuntu开发环境"/></a><div class="content"><a class="title" href="/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85Ubuntu%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" title="OpenGL学习笔记（一）：安装Ubuntu开发环境">OpenGL学习笔记（一）：安装Ubuntu开发环境</a><time datetime="2023-06-03T16:00:00.000Z" title="发表于 2023-06-04 00:00:00">2023-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%94%BB%E4%B8%AA%E7%AA%97%E5%8F%A3%E7%95%8C%E9%9D%A2/" title="OpenGL学习笔记（二）：画个窗口界面"><img src="/img/IronMan/7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenGL学习笔记（二）：画个窗口界面"/></a><div class="content"><a class="title" href="/2023/06/04/OpenGL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%94%BB%E4%B8%AA%E7%AA%97%E5%8F%A3%E7%95%8C%E9%9D%A2/" title="OpenGL学习笔记（二）：画个窗口界面">OpenGL学习笔记（二）：画个窗口界面</a><time datetime="2023-06-03T16:00:00.000Z" title="发表于 2023-06-04 00:00:00">2023-06-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/03/x264%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4/" title="编译x264源代码的具体步骤"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="编译x264源代码的具体步骤"/></a><div class="content"><a class="title" href="/2023/06/03/x264%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E7%9A%84%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4/" title="编译x264源代码的具体步骤">编译x264源代码的具体步骤</a><time datetime="2023-06-02T16:00:00.000Z" title="发表于 2023-06-03 00:00:00">2023-06-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/" title="设计模式学习笔记之迭代器模式"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式学习笔记之迭代器模式"/></a><div class="content"><a class="title" href="/2023/06/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/" title="设计模式学习笔记之迭代器模式">设计模式学习笔记之迭代器模式</a><time datetime="2023-06-01T16:00:00.000Z" title="发表于 2023-06-02 00:00:00">2023-06-02</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
