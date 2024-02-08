@@ -1,0 +1,282 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>FFmpeg中时间基与时间戳的详解 | 吴健强のBLOG</title><meta name="keywords" content="FFmpeg"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="首先在讲解时间基之前，需要大家了解以下两个知识点：  Ｉ帧，P帧，B帧指的是什么？ 什么是GOP？ 什么是PTS和DTS?  Ｉ帧，P帧，B帧指的是什么？Ｉ帧一般也叫关键帧，属于帧内编码帧，特点是包含了一张图像的完整信息，这些信息不包含运动矢量，因此在解码的时候不需要去参考其他的帧来进行解码操作；同时我们平时使用播放器进行seek操作的时，为了保证图片的完整显示，其实是不是seek到指定的这个时间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FFmpeg中时间基与时间戳的详解">
+<meta property="og:url" content="http://example.com/2023/02/18/FFmpeg%E4%B8%AD%E6%97%B6%E9%97%B4%E5%9F%BA%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="首先在讲解时间基之前，需要大家了解以下两个知识点：  Ｉ帧，P帧，B帧指的是什么？ 什么是GOP？ 什么是PTS和DTS?  Ｉ帧，P帧，B帧指的是什么？Ｉ帧一般也叫关键帧，属于帧内编码帧，特点是包含了一张图像的完整信息，这些信息不包含运动矢量，因此在解码的时候不需要去参考其他的帧来进行解码操作；同时我们平时使用播放器进行seek操作的时，为了保证图片的完整显示，其实是不是seek到指定的这个时间">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/5.jpg">
+<meta property="article:published_time" content="2023-02-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-08T12:18:51.930Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/5.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2023/02/18/FFmpeg%E4%B8%AD%E6%97%B6%E9%97%B4%E5%9F%BA%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E8%AF%A6%E8%A7%A3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FFmpeg中时间基与时间戳的详解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-08 20:18:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">FFmpeg中时间基与时间戳的详解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-17T16:00:00.000Z" title="发表于 2023-02-18 00:00:00">2023-02-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-08T12:18:51.930Z" title="更新于 2024-02-08 20:18:51">2024-02-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="FFmpeg中时间基与时间戳的详解"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>首先在讲解时间基之前，需要大家了解以下两个知识点：</p>
+<ul>
+<li>Ｉ帧，P帧，B帧指的是什么？</li>
+<li>什么是GOP？</li>
+<li>什么是PTS和DTS?</li>
+</ul>
+<h2 id="I帧，P帧，B帧指的是什么？"><a href="#I帧，P帧，B帧指的是什么？" class="headerlink" title="Ｉ帧，P帧，B帧指的是什么？"></a>Ｉ帧，P帧，B帧指的是什么？</h2><p>Ｉ帧一般也叫关键帧，属于帧内编码帧，特点是包含了一张图像的完整信息，这些信息不包含运动矢量，因此在解码的时候不需要去参考其他的帧来进行解码操作；同时我们平时使用播放器进行seek操作的时，为了保证图片的完整显示，其实是不是seek到指定的这个时间点位置的，而是seek到该时间点附近的I帧上，这样就能有效的避免seek的点为B帧或P帧所造成的当前画面花屏残缺的现象（至于是寻找该Seek帧还是之后的I帧，这就取决于你在调用FFmpeg的av_seek_frame函数的第三个参数所设置的策略了，一般设置为AVSEEK_FLAG_BACKWARD），切换视频轨道同样也是这个道理．</p>
+<p>由于I帧具备不需要参考其他帧进行解码的这一特点．因此I帧越多就越能有效的阻止误差的累积和扩散。<br>在闭合式GOP中，每个GOP的第一个帧一定是I帧，且当前GOP的数据不会参考前后GOP的数据。</p>
+<p>P帧：一般也叫向前预测编码帧，属于帧间编码帧，特点是并未完整的包含一帧画面的所有信息，而是利用之前的I帧或P帧进行预测编码</p>
+<p>B帧：也叫双向预测编码图像帧，属于帧间编码帧，特点是并未完整的包含一帧画面的所有信息，而是利用之前和之后的I帧或P帧进行双向预测编码。B帧不可以作为参考帧（也就是说B帧不能被其他I&#x2F;P&#x2F;B帧所参考，只能是B帧去参考其他I&#x2F;P帧）。<br>同时B帧比I帧或者帧具有更高的压缩率，但需要更多的缓冲时间以及更高的CPU占用率，因此B帧适合本地存储以及视频点播，而不适用对实时性要求较高的直播系统。</p>
+<p>举例：<br>采集顺序：IBBPBBIPBP<br>解码顺序：IPBBIBBPBP</p>
+<h2 id="什么是GOP？"><a href="#什么是GOP？" class="headerlink" title="什么是GOP？"></a>什么是GOP？</h2><p>在视频编码序列中，GOP即Group of picture（图像组），指两个I帧之间的距离，Reference（参考周期）指两个P帧之间的距离。</p>
+<p>一个I帧所占用的字节数大于一个P帧，一个P帧所占用的字节数大于一个B帧。所以在码率不变的前提下，GOP值越大，P、B帧的数量会越多，平均每个I、P、B帧所占用的字节数就越多，也就更容易获取较好的图像质量；Reference越大，B帧的数量越多，同理也更容易获得较好的图像质量。</p>
+<p>需要说明的是，通过提高GOP值来提高图像质量是有限度的，在遇到场景切换的情况时，H.264编码器会自动强制插入一个I帧，此时实际的GOP值被缩短了。另一方面，在一个GOP中，P、B帧是由I帧预测得到的，当I帧的图像质量比较差时，会影响到一个GOP中后续P、B帧的图像质量，直到下一个GOP开始才有可能得以恢复，所以GOP值也不宜设置过大。</p>
+<p>同时，由于P、B帧的复杂度大于I帧，所以过多的P、B帧会影响编码效率，使编码效率降低。另外，过长的GOP还会影响Seek操作的响应速度，由于P、B帧是由前面的I或P帧预测得到的，所以Seek操作需要直接定位，解码某一个P或B帧时，需要先解码得到本GOP内的I帧及之前的N个预测帧才可以，GOP值越长，需要解码的预测帧就越多，seek响应的时间也越长。</p>
+<h2 id="什么是PTS和DTS"><a href="#什么是PTS和DTS" class="headerlink" title="什么是PTS和DTS?"></a>什么是PTS和DTS?</h2><p>DTS(Decoding Time Stamp, 解码时间戳)，表示压缩帧的解码时间。<br>PTS(Presentation Time Stamp, 显示时间戳)，表示将压缩帧解码后得到的原始帧后，在我们的屏幕设备上的显示时间。</p>
+<p>需要注意的是：音频中DTS和PTS是相同的。视频中由于B帧需要参考其他的I&#x2F;P帧进行双向预测编码，因此含B帧的视频解码顺序与显示顺序不同，即DTS与PTS不同（不含B帧的视频，其DTS和PTS是相同的）。</p>
+<h1 id="FFmpeg-中的时间基与时间戳"><a href="#FFmpeg-中的时间基与时间戳" class="headerlink" title="FFmpeg 中的时间基与时间戳"></a>FFmpeg 中的时间基与时间戳</h1><h2 id="时间基与时间戳的概念"><a href="#时间基与时间戳的概念" class="headerlink" title="时间基与时间戳的概念"></a>时间基与时间戳的概念</h2><p>在FFmpeg中，时间基(time_base)是时间戳(timestamp)的单位，实际的时间(以秒等为单位)＝时间戳*时间基。</p>
+<p>例如，一帧视频的dts&#x3D;40,pts&#x3D;160,time_base&#x3D;1&#x2F;1000s．</p>
+<p>那么：</p>
+<pre><code>该帧视频的解码时间＝dts*time_base=40/1000s=0.04s
+该帧视频的显示时间＝pts*time_base=160/1000s=0.16s
+</code></pre>
+<p>FFmpeg中时间戳(pts&#x2F;dts)的类型是int64_t类型（范围：-9223372036854775808~9223372036854775807），<br>time_base相当于是一个时钟脉冲或者说是单片机里的晶振周期，而dts&#x2F;pts则是时钟脉冲（晶振周期）的计数。</p>
+<h3 id="三种时间基-tbr、tbn-和-tbc"><a href="#三种时间基-tbr、tbn-和-tbc" class="headerlink" title="三种时间基 tbr、tbn 和 tbc"></a>三种时间基 tbr、tbn 和 tbc</h3><p>不同的封装格式具有不同的时间基。在 FFmpeg 处理音视频过程中的不同阶段，也会采用不同的时间基。<br>FFmepg 中有三种时间基，命令行中 tbr、tbn 和 tbc 的打印值就是这三种时间基的倒数：<br>tbn：对应容器中的时间基。值是 AVStream.time_base 的倒数<br>tbc：对应编解码器中的时间基。值是 AVCodecContext.time_base 的倒数<br>tbr：从视频流中猜算得到，可能是帧率或场率(帧率的 2 倍)</p>
+<h3 id="内部时间基-AV-TIME-BASE"><a href="#内部时间基-AV-TIME-BASE" class="headerlink" title="内部时间基 AV_TIME_BASE"></a>内部时间基 AV_TIME_BASE</h3><p>除以上三种时间基外，FFmpeg还有一个内部时间基AV_TIME_BASE(以及分数形式的AV_TIME_BASE_Q)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// Internal time base represented as integer</span><br><span class="line">#define AV_TIME_BASE            1000000</span><br><span class="line"></span><br><span class="line">// Internal time base represented as fractional value</span><br><span class="line">#define AV_TIME_BASE_Q          (AVRational)&#123;1, AV_TIME_BASE&#125;</span><br></pre></td></tr></table></figure>
+<p>注：AV_TIME_BASE和AV_TIME_BASE_Q:用于 FFmpeg 内部函数处理，使用此时间基计算得到时间值表示的是微秒（1s&#x3D;1000ms&#x3D;1000000us）。</p>
+<h3 id="时间值形式转换"><a href="#时间值形式转换" class="headerlink" title="时间值形式转换"></a>时间值形式转换</h3><p>av_q2d()将时间从AVRational形式转换为double形式。AVRational是分数类型，double是双精度浮点数类型，转换的结果单位是秒。转换前后的值基于同一时间基，仅仅是数值的表现形式不同而已。</p>
+<p>av_q2d()实现如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Convert an AVRational to a `double`.</span></span><br><span class="line"><span class="comment"> * @param a AVRational to convert</span></span><br><span class="line"><span class="comment"> * @return `a` in floating-point form</span></span><br><span class="line"><span class="comment"> * @see av_d2q()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">double</span> <span class="title function_">av_q2d</span><span class="params">(AVRational a)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a.num / (<span class="type">double</span>) a.den;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>av_q2d()使用方法如下：</p>
+<p>AVStream stream;<br>AVPacket packet;<br>packet 播放时刻值：timestamp(单位秒) &#x3D; packet.pts × av_q2d(stream.time_base);<br>packet 播放时长值：duration(单位秒) &#x3D; packet.duration × av_q2d(stream.time_base);</p>
+<h3 id="时间基转换函数"><a href="#时间基转换函数" class="headerlink" title="时间基转换函数"></a>时间基转换函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Rescale a 64-bit integer by 2 rational numbers.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The operation is mathematically equivalent to `a × bq / cq`.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This function is equivalent to av_rescale_q_rnd() with #AV_ROUND_NEAR_INF.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @see av_rescale(), av_rescale_rnd(), av_rescale_q_rnd()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int64_t</span> <span class="title function_">av_rescale_q</span><span class="params">(<span class="type">int64_t</span> a, AVRational bq, AVRational cq)</span> av_const;</span><br></pre></td></tr></table></figure>
+<p>av_rescale_q()用于不同时间基的转换，用于将时间值从一种时间基转换为另一种时间基。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Convert valid timing fields (timestamps / durations) in a packet from one</span></span><br><span class="line"><span class="comment"> * timebase to another. Timestamps with unknown values (AV_NOPTS_VALUE) will be</span></span><br><span class="line"><span class="comment"> * ignored.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param pkt packet on which the conversion will be performed</span></span><br><span class="line"><span class="comment"> * @param tb_src source timebase, in which the timing fields in pkt are</span></span><br><span class="line"><span class="comment"> *               expressed</span></span><br><span class="line"><span class="comment"> * @param tb_dst destination timebase, to which the timing fields will be</span></span><br><span class="line"><span class="comment"> *               converted</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">av_packet_rescale_ts</span><span class="params">(AVPacket *pkt, AVRational tb_src, AVRational tb_dst)</span>;</span><br></pre></td></tr></table></figure>
+<p>av_packet_rescale_ts()用于将AVPacket中各种时间值从一种时间基转换为另一种时间基。</p>
+<h2 id="转封装过程中的时间基转换"><a href="#转封装过程中的时间基转换" class="headerlink" title="转封装过程中的时间基转换"></a>转封装过程中的时间基转换</h2><p>容器中的时间基(AVStream.time_base中的tbn)定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">AVStream</span> &#123;</span></span><br><span class="line">    ......</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * This is the fundamental unit of time (in seconds) in terms</span></span><br><span class="line"><span class="comment">     * of which frame timestamps are represented.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * decoding: set by libavformat</span></span><br><span class="line"><span class="comment">     * encoding: May be set by the caller before avformat_write_header() to</span></span><br><span class="line"><span class="comment">     *           provide a hint to the muxer about the desired timebase. In</span></span><br><span class="line"><span class="comment">     *           avformat_write_header(), the muxer will overwrite this field</span></span><br><span class="line"><span class="comment">     *           with the timebase that will actually be used for the timestamps</span></span><br><span class="line"><span class="comment">     *           written into the file (which may or may not be related to the</span></span><br><span class="line"><span class="comment">     *           user-provided one, depending on the format).</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    AVRational time_base;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>AVStream.time_base是AVPacket中pts和dts的时间单位．<br>输入流与输出流中的time_base按如下方式确定：</p>
+<ul>
+<li>对于输入流：打开输入文件后，调用 avformat_find_stream_info()可获取到每个流中的 time_base</li>
+<li>对于输出流：打开输出文件后，调用 avformat_write_header()可根据输出文件封装格式确定每个流的 time_base 并写入输出文件中</li>
+</ul>
+<p>不同封装格式具有不同的时间基，在转封装(将一种封装格式转换为另一种封装格式)过程中，时间基转换相关代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">av_read_frame(ifmt_ctx, &amp;pkt);// 从输入文件中读取 packet</span><br><span class="line">pkt.pts = av_rescale_q_rnd(pkt.pts, in_stream-&gt;time_base, out_stream-&gt;time_base, AV_ROUND_NEAR_INF|AV_ROUND_PASS_MINMAX);</span><br><span class="line"></span><br><span class="line">pkt.dts = av_rescale_q_rnd(pkt.dts, in_stream-&gt;time_base, out_stream-&gt;time_base, AV_ROUND_NEAR_INF|AV_ROUND_PASS_MINMAX);</span><br><span class="line"></span><br><span class="line">pkt.duration = av_rescale_q(pkt.duration, in_stream-&gt;time_base, out_stream-&gt;time_base);</span><br></pre></td></tr></table></figure>
+<p>下面的代码具有和上面代码相同的效果：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">av_read_frame(ifmt_ctx, &amp;pkt);<span class="comment">// 从输入文件中读取 packet</span></span><br><span class="line">av_packet_rescale_ts(&amp;pkt, in_stream-&gt;time_base, out_stream-&gt;time_base);<span class="comment">// 将packet中的各时间值从输入流封装格式时间基转换到输出流封装格式时间基</span></span><br></pre></td></tr></table></figure>
+<p>这里流里的时间基in_stream-&gt;time_base和out_stream-&gt;time_base，是容器中的时间基，也就是上面说的tbn。</p>
+<h2 id="转码过程中的时间基转换"><a href="#转码过程中的时间基转换" class="headerlink" title="转码过程中的时间基转换"></a>转码过程中的时间基转换</h2><p>编解码器中的时间基(AVCodecContext.time_base，3.2 节中的 tbc)定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">AVCodecContext</span> &#123;</span></span><br><span class="line">    ......</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * This is the fundamental unit of time (in seconds) in terms</span></span><br><span class="line"><span class="comment">     * of which frame timestamps are represented. For fixed-fps content,</span></span><br><span class="line"><span class="comment">     * timebase should be 1/framerate and timestamp increments should be</span></span><br><span class="line"><span class="comment">     * identically 1.</span></span><br><span class="line"><span class="comment">     * This often, but not always is the inverse of the frame rate or field rate</span></span><br><span class="line"><span class="comment">     * for video. 1/time_base is not the average frame rate if the frame rate is not</span></span><br><span class="line"><span class="comment">     * constant.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * Like containers, elementary streams also can store timestamps, 1/time_base</span></span><br><span class="line"><span class="comment">     * is the unit in which these timestamps are specified.</span></span><br><span class="line"><span class="comment">     * As example of such codec time base see ISO/IEC 14496-2:2001(E)</span></span><br><span class="line"><span class="comment">     * vop_time_increment_resolution and fixed_vop_rate</span></span><br><span class="line"><span class="comment">     * (fixed_vop_rate == 0 implies that it is different from the framerate)</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * - encoding: MUST be set by user.</span></span><br><span class="line"><span class="comment">     * - decoding: the use of this field for decoding is deprecated.</span></span><br><span class="line"><span class="comment">     *             Use framerate instead.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    AVRational time_base;</span><br><span class="line">    </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述注释指出，AVCodecContext.time_base 是帧率(视频帧)的倒数，每帧时间戳递增 1，那么 tbc 就等于帧率。编码过程中，应由用户设置好此参数。解码过程中，此参数已过时，建议直接使用帧率倒数用作时间基。</p>
+<p>这里有一个问题：按照此处注释说明，帧率为 25 的视频流，tbc 理应为 25，但实际值却为 50，不知作何解释？是否 tbc 已经过时，不具参考意义？</p>
+<p>根据注释中的建议，实际使用时，在视频解码过程中，我们不使用 AVCodecContext.time_base，而用帧率倒数作时间基，在视频编码过程中，我们将 AVCodecContext.time_base 设置为帧率的倒数。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/02/18/FFmpeg%E4%B8%AD%E6%97%B6%E9%97%B4%E5%9F%BA%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E8%AF%A6%E8%A7%A3/">http://example.com/2023/02/18/FFmpeg中时间基与时间戳的详解/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/5.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/27/FFmpeg%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><img class="prev-cover" src="/img/IronMan/4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">FFmpeg常用命令</div></div></a></div><div class="next-post pull-right"><a href="/2023/02/14/FFmpeg%E8%A7%A3%E7%A0%81H264/"><img class="next-cover" src="/img/IronMan/1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">FFmpeg解码H264</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#I%E5%B8%A7%EF%BC%8CP%E5%B8%A7%EF%BC%8CB%E5%B8%A7%E6%8C%87%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">Ｉ帧，P帧，B帧指的是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFGOP%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">什么是GOP？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFPTS%E5%92%8CDTS"><span class="toc-number">3.</span> <span class="toc-text">什么是PTS和DTS?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FFmpeg-%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%BA%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-number"></span> <span class="toc-text">FFmpeg 中的时间基与时间戳</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%9F%BA%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">时间基与时间戳的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E6%97%B6%E9%97%B4%E5%9F%BA-tbr%E3%80%81tbn-%E5%92%8C-tbc"><span class="toc-number">1.1.</span> <span class="toc-text">三种时间基 tbr、tbn 和 tbc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E6%97%B6%E9%97%B4%E5%9F%BA-AV-TIME-BASE"><span class="toc-number">1.2.</span> <span class="toc-text">内部时间基 AV_TIME_BASE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%80%BC%E5%BD%A2%E5%BC%8F%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">时间值形式转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%9F%BA%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="toc-number">1.4.</span> <span class="toc-text">时间基转换函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E5%B0%81%E8%A3%85%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%BA%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">转封装过程中的时间基转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E7%A0%81%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%BA%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.</span> <span class="toc-text">转码过程中的时间基转换</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/02/02/WebAudioAPI%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/" title="WebAudioAPI音频重采样"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WebAudioAPI音频重采样"/></a><div class="content"><a class="title" href="/2024/02/02/WebAudioAPI%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/" title="WebAudioAPI音频重采样">WebAudioAPI音频重采样</a><time datetime="2024-02-01T16:00:00.000Z" title="发表于 2024-02-02 00:00:00">2024-02-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/02/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E5%BC%95%E6%93%8E%E4%B9%8B%E5%A4%9A%E8%B7%AF%E6%B5%81%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9D%97%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码引擎之多路流转换模块的架构设计"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频编解码引擎之多路流转换模块的架构设计"/></a><div class="content"><a class="title" href="/2024/02/02/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E5%BC%95%E6%93%8E%E4%B9%8B%E5%A4%9A%E8%B7%AF%E6%B5%81%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9D%97%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码引擎之多路流转换模块的架构设计">音视频编解码引擎之多路流转换模块的架构设计</a><time datetime="2024-02-01T16:00:00.000Z" title="发表于 2024-02-02 00:00:00">2024-02-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件管理器的设计"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频解复用插件系统的架构设计之解复用插件管理器的设计"/></a><div class="content"><a class="title" href="/2024/01/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件管理器的设计">音视频解复用插件系统的架构设计之解复用插件管理器的设计</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/14/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件的设计"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频解复用插件系统的架构设计之解复用插件的设计"/></a><div class="content"><a class="title" href="/2024/01/14/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件的设计">音视频解复用插件系统的架构设计之解复用插件的设计</a><time datetime="2024-01-13T16:00:00.000Z" title="发表于 2024-01-14 00:00:00">2024-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/10/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%AA%92%E4%BD%93%E4%BF%A1%E6%81%AF%E7%9A%84%E6%8F%92%E4%BB%B6%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之媒体信息的插件设计"><img src="/img/IronMan/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频解复用插件系统的架构设计之媒体信息的插件设计"/></a><div class="content"><a class="title" href="/2024/01/10/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%AA%92%E4%BD%93%E4%BF%A1%E6%81%AF%E7%9A%84%E6%8F%92%E4%BB%B6%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之媒体信息的插件设计">音视频解复用插件系统的架构设计之媒体信息的插件设计</a><time datetime="2024-01-09T16:00:00.000Z" title="发表于 2024-01-10 00:00:00">2024-01-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

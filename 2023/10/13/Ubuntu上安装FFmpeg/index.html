@@ -1,0 +1,346 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Ubuntu上安装FFmpeg | 吴健强のBLOG</title><meta name="keywords" content="Linux FFmpeg"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Ubuntu上安装FFmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu上安装FFmpeg">
+<meta property="og:url" content="http://example.com/2023/10/13/Ubuntu%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="Ubuntu上安装FFmpeg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/8.jpg">
+<meta property="article:published_time" content="2023-10-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-08T12:11:59.020Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/8.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2023/10/13/Ubuntu%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Ubuntu上安装FFmpeg',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-02-08 20:11:59'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Ubuntu上安装FFmpeg</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-12T16:00:00.000Z" title="发表于 2023-10-13 00:00:00">2023-10-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-08T12:11:59.020Z" title="更新于 2024-02-08 20:11:59">2024-02-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Ubuntu上安装FFmpeg"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff</p>
+<p>sudo apt install yum</p>
+<p>curl -O -L <a target="_blank" rel="noopener" href="https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2">https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2</a><br>tar xjvf nasm-2.15.05.tar.bz2<br>cd nasm-2.15.05<br>.&#x2F;autogen.sh<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin”<br>make<br>make install</p>
+<p>curl -O -L <a target="_blank" rel="noopener" href="https://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz">https://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz</a><br>tar xzvf yasm-1.3.0.tar.gz<br>cd yasm-1.3.0<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin”<br>make<br>make install</p>
+<p>cd x264<br>PKG_CONFIG_PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib&#x2F;pkgconfig” .&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” –enable-static<br>make<br>make install</p>
+<p>cmake -S &#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;x265_git&#x2F;source -B .</p>
+<p>cd ~&#x2F;ffmpeg_sources&#x2F;x265_git&#x2F;build&#x2F;linux<br>cmake -G “Unix Makefiles” -DCMAKE_INSTALL_PREFIX&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” -DENABLE_SHARED:bool&#x3D;off ..&#x2F;..&#x2F;source<br>make<br>make install</p>
+<p>cd fdk-aac<br>autoreconf -fiv<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –disable-shared<br>make<br>make install</p>
+<p>cd lame-3.100<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” –disable-shared –enable-nasm<br>make<br>make install</p>
+<p>sudo apt-get install automake<br>sudo apt-get install autoconf m4 perl</p>
+<p>sudo apt-get update<br>sudo apt-get install aclocal-1.16</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yuchunhai321/article/details/122937524">https://blog.csdn.net/yuchunhai321/article/details/122937524</a></p>
+<p>cd opus-1.3.1<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –disable-shared<br>make<br>make install</p>
+<p>cd libvpx<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –disable-examples –disable-unit-tests –enable-vp9-highbitdepth –as&#x3D;yasm –disable-shared<br>make<br>make install</p>
+<p>编译libpng:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.sourceforge.net/libpng/libpng-1.6.39.tar.gz</span><br><span class="line"></span><br><span class="line">cd ./libpng-1.6.39</span><br><span class="line">./configure --prefix=/home/ws/Desktop/GitDemo/WES_WEBM_PLPHA_PREMULTIPLY/ff/ffmpeg_build --enable-shared --enable-static</span><br><span class="line">make -j</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>编译libopenjpeg:</p>
+<p>&#96;&#96;&#96;<br>git clone -b version.2.1 <a target="_blank" rel="noopener" href="https://github.com/uclouvain/openjpeg">https://github.com/uclouvain/openjpeg</a><br>cd .&#x2F;openjpeg<br>mkdir build<br>cd build<br>cmake -D CMAKE_BUILD_TYPE&#x3D;RELEASE <br>    -D CMAKE_INSTALL_PREFIX&#x3D;&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build -D BUILD_SHARED_LIBS&#x3D;OFF ..&#x2F;</p>
+<p>make<br>make install</p>
+<p>cd libwep<br>.&#x2F;configure –prefix&#x3D;&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build –enable-shared –enable-static<br>make -j<br>make install</p>
+<p>LDFLAGS&#x3D;”-static” PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” PKG_CONFIG_PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib&#x2F;pkgconfig” .&#x2F;configure   –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build”   –pkg-config-flags&#x3D;”–static”   –extra-cflags&#x3D;”-I&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;include”   –extra-ldflags&#x3D;”-L&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib”   –extra-libs&#x3D;-lpthread   –extra-libs&#x3D;-lm   –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin”  –enable-gpl –enable-libfdk_aac –enable-libopus –enable-libvpx –enable-libx264 –disable-libx265 –enable-nonfree –enable-decoder&#x3D;png –enable-encoder&#x3D;png –enable-decoder&#x3D;bmp –enable-encoder&#x3D;bmp –enable-gray –enable-libopenjpeg –enable-libwebp –disable-hwaccels –disable-indevs –disable-outdevs –disable-vaapi<br>&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;<br>tar -czvf web预乘Ubuntu18版本的ffmpeg.tar.gz &lt;要压缩的文件夹路径&gt;</p>
+<p>wget <a target="_blank" rel="noopener" href="https://www.nasm.us/pub/nasm/releasebuilds/2.16.01/nasm-2.16.01.tar.bz2">https://www.nasm.us/pub/nasm/releasebuilds/2.16.01/nasm-2.16.01.tar.bz2</a> &amp;&amp; <br>tar xjvf nasm-2.16.01.tar.bz2 &amp;&amp; <br>cd nasm-2.16.01 &amp;&amp; <br>.&#x2F;autogen.sh &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” .&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” &amp;&amp; <br>make &amp;&amp; <br>make install</p>
+<p>curl -O -L <a target="_blank" rel="noopener" href="https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2">https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.bz2</a><br>tar xjvf nasm-2.15.05.tar.bz2<br>cd nasm-2.15.05<br>.&#x2F;autogen.sh<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin”<br>make<br>make install</p>
+<p>curl -O -L <a target="_blank" rel="noopener" href="https://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz">https://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz</a><br>tar xzvf yasm-1.3.0.tar.gz<br>cd yasm-1.3.0<br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin”<br>make<br>make install</p>
+<p>git -C x264 pull 2&gt; &#x2F;dev&#x2F;null || git clone –depth 1 <a target="_blank" rel="noopener" href="https://code.videolan.org/videolan/x264.git">https://code.videolan.org/videolan/x264.git</a> &amp;&amp; <br>cd x264 &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” PKG_CONFIG_PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib&#x2F;pkgconfig” .&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” –enable-static –enable-pic &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install</p>
+<p>sudo apt-get install libnuma-dev &amp;&amp; <br>wget -O x265.tar.bz2 <a target="_blank" rel="noopener" href="https://bitbucket.org/multicoreware/x265_git/get/master.tar.bz2">https://bitbucket.org/multicoreware/x265_git/get/master.tar.bz2</a> &amp;&amp; <br>tar xjvf x265.tar.bz2 &amp;&amp; <br>cd multicoreware*&#x2F;build&#x2F;linux &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” cmake -G “Unix Makefiles” -DCMAKE_INSTALL_PREFIX&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” -DENABLE_SHARED&#x3D;off ..&#x2F;..&#x2F;source &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install</p>
+<p>git -C libvpx pull 2&gt; &#x2F;dev&#x2F;null || git clone –depth 1 <a target="_blank" rel="noopener" href="https://chromium.googlesource.com/webm/libvpx.git">https://chromium.googlesource.com/webm/libvpx.git</a> &amp;&amp; <br>cd libvpx &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” .&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –disable-examples –disable-unit-tests –enable-vp9-highbitdepth –as&#x3D;yasm &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install</p>
+<p>git -C fdk-aac pull 2&gt; &#x2F;dev&#x2F;null || git clone –depth 1 <a target="_blank" rel="noopener" href="https://github.com/mstorsjo/fdk-aac">https://github.com/mstorsjo/fdk-aac</a> &amp;&amp; <br>cd fdk-aac &amp;&amp; <br>autoreconf -fiv &amp;&amp; <br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –disable-shared &amp;&amp; <br>make &amp;&amp; <br>make install</p>
+<p>git -C opus pull 2&gt; &#x2F;dev&#x2F;null || git clone –depth 1 <a target="_blank" rel="noopener" href="https://github.com/xiph/opus.git">https://github.com/xiph/opus.git</a> &amp;&amp; <br>cd opus &amp;&amp; <br>.&#x2F;autogen.sh &amp;&amp; <br>.&#x2F;configure –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –disable-shared &amp;&amp; <br>make &amp;&amp; <br>make install</p>
+<p>git -C aom pull 2&gt; &#x2F;dev&#x2F;null || git clone –depth 1 <a target="_blank" rel="noopener" href="https://aomedia.googlesource.com/aom">https://aomedia.googlesource.com/aom</a> &amp;&amp; <br>mkdir -p aom_build &amp;&amp; <br>cd aom_build &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” cmake -G “Unix Makefiles” -DCMAKE_INSTALL_PREFIX&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” -DENABLE_TESTS&#x3D;OFF -DENABLE_NASM&#x3D;on ..&#x2F;aom &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install</p>
+<p>git -C SVT-AV1 pull 2&gt; &#x2F;dev&#x2F;null || git clone <a target="_blank" rel="noopener" href="https://gitlab.com/AOMediaCodec/SVT-AV1.git">https://gitlab.com/AOMediaCodec/SVT-AV1.git</a> &amp;&amp; <br>mkdir -p SVT-AV1&#x2F;build &amp;&amp; <br>cd SVT-AV1&#x2F;build &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” cmake -G “Unix Makefiles” -DCMAKE_INSTALL_PREFIX&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” -DCMAKE_BUILD_TYPE&#x3D;Release -DBUILD_DEC&#x3D;OFF -DBUILD_SHARED_LIBS&#x3D;OFF .. &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install</p>
+<p>sudo apt-get install python3-pip &amp;&amp; <br>pip3 install –user meson</p>
+<p>git -C dav1d pull 2&gt; &#x2F;dev&#x2F;null || git clone –depth 1 <a target="_blank" rel="noopener" href="https://code.videolan.org/videolan/dav1d.git">https://code.videolan.org/videolan/dav1d.git</a> &amp;&amp; <br>mkdir -p dav1d&#x2F;build &amp;&amp; <br>cd dav1d&#x2F;build &amp;&amp; <br>meson setup -Denable_tools&#x3D;false -Denable_tests&#x3D;false –default-library&#x3D;static .. –prefix “&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –libdir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib” &amp;&amp; <br>ninja &amp;&amp; <br>ninja install</p>
+<p>wget <a target="_blank" rel="noopener" href="https://github.com/Netflix/vmaf/archive/v2.3.1.tar.gz">https://github.com/Netflix/vmaf/archive/v2.3.1.tar.gz</a> &amp;&amp; <br>tar xvf v2.3.1.tar.gz &amp;&amp; <br>mkdir -p vmaf-2.3.1&#x2F;libvmaf&#x2F;build &amp;&amp;<br>cd vmaf-2.3.1&#x2F;libvmaf&#x2F;build &amp;&amp; <br>meson setup -Denable_tests&#x3D;false -Denable_docs&#x3D;false –buildtype&#x3D;release –default-library&#x3D;static .. –prefix “&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” –libdir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib” &amp;&amp; <br>ninja &amp;&amp; <br>ninja install</p>
+<p>sudo apt-get install libgnutls28-dev</p>
+<p>wget -O ffmpeg-snapshot.tar.bz2 <a target="_blank" rel="noopener" href="https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2">https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2</a> &amp;&amp; <br>tar xjvf ffmpeg-snapshot.tar.bz2 &amp;&amp; <br>cd ffmpeg &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” PKG_CONFIG_PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib&#x2F;pkgconfig” .&#x2F;configure <br>  –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” <br>  –pkg-config-flags&#x3D;”–static” <br>  –extra-cflags&#x3D;”-I&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;include” <br>  –extra-ldflags&#x3D;”-L&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib” <br>  –extra-libs&#x3D;”-lpthread -lm” <br>  –ld&#x3D;”g++” <br>  –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” <br>  –enable-gpl <br>  –enable-gnutls <br>  –enable-libaom <br>  –enable-libass <br>  –enable-libfdk-aac <br>  –enable-libfreetype <br>  –enable-libmp3lame <br>  –enable-libopus <br>  –enable-libsvtav1 <br>  –enable-libdav1d <br>  –enable-libvorbis <br>  –enable-libvpx <br>  –enable-libx264 <br>  –enable-libx265 <br>  –enable-nonfree <br>  –enable-debug <br>  –disable-x86asm <br>  –disable-stripping　&amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install &amp;&amp; <br>hash -r</p>
+<p>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” PKG_CONFIG_PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib&#x2F;pkgconfig” .&#x2F;configure <br>  –prefix&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build” <br>  –pkg-config-flags&#x3D;”–static” <br>  –extra-cflags&#x3D;”-I&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;include” <br>  –extra-ldflags&#x3D;”-L&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;ffmpeg_build&#x2F;lib” <br>  –extra-libs&#x3D;”-lpthread -lm” <br>  –ld&#x3D;”g++” <br>  –bindir&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin” <br>  –enable-gpl <br>  –enable-gnutls <br>  –enable-libaom <br>  –enable-libass <br>  –enable-libfdk-aac <br>  –enable-libfreetype <br>  –enable-libmp3lame <br>  –enable-libopus <br>  –enable-libsvtav1 <br>  –enable-libdav1d <br>  –enable-libvorbis <br>  –enable-libvpx <br>  –enable-libx264 <br>  –enable-libx265 <br>  –enable-nonfree <br>  –enable-debug&#x3D;3 <br>  –disable-optimizations –disable-x86asm –extra-cflags&#x3D;-g –disable-stripping &amp;&amp; <br>PATH&#x3D;”&#x2F;home&#x2F;ws&#x2F;Desktop&#x2F;GitDemo&#x2F;WES_WEBM_PLPHA_PREMULTIPLY&#x2F;ff&#x2F;bin:$PATH” make &amp;&amp; <br>make install &amp;&amp; <br>hash -r</p>
+<p>sudo apt-get update -qq &amp;&amp; sudo apt-get -y install autoconf automake  build-essential  cmake  git-core  ibass-dev  libfreetype6-dev  libgnutls28-dev libmp3lame-dev libsdl2-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev libxcb-xfixes0-dev meson  inja-build pkg-config texinfo wget yasm zlib1g-dev</p>
+<p>sudo apt install libunistring-dev libaom-dev libdav1d-dev</p>
+<p>将下面这个ffmpeg命令修改成launch.json的”args”<br>.&#x2F;ffmpeg　-c:v libvpx -i &#x2F;home&#x2F;ws&#x2F;Videos&#x2F;input.webm -vcodec vp8 -auto-alt-ref 0 -vf “scale&#x3D;’min(896,trunc(iw&#x2F;2&#x2F;2)*2)’ :’min(504,trunc(ih&#x2F;2&#x2F;2)*2)’:force_original_aspect_ratio&#x3D;decrease:force_divisible_by&#x3D;2” -acodec copy &#x2F;home&#x2F;ws&#x2F;Videos&#x2F;output.webm</p>
+<p>ffmpeg -i input.webm -metadata ffmpeg_version&#x3D;”$(ffmpeg -version | grep ‘ffmpeg version’ | cut -d’ ‘ -f3)” output.webm</p>
+<p>int main(int argc, char **argv)<br>{<br>    Scheduler *sch &#x3D; NULL;<br>    AVFormatContext *format_ctx &#x3D; NULL;</p>
+<pre><code>int ret;
+BenchmarkTimeStamps ti;
+
+init_dynload();
+
+setvbuf(stderr,NULL,_IONBF,0); /* win32 runtime needs this */
+
+av_log_set_flags(AV_LOG_SKIP_REPEATED);
+parse_loglevel(argc, argv, options);
+</code></pre>
+<p>#if CONFIG_AVDEVICE<br>    avdevice_register_all();<br>#endif<br>    avformat_network_init();</p>
+<pre><code>show_banner(argc, argv, options);
+
+sch = sch_alloc();
+if (!sch) &#123;
+    ret = AVERROR(ENOMEM);
+    goto finish;
+&#125;
+
+/* parse options and open all input/output files */
+ret = ffmpeg_parse_options(argc, argv, sch);
+if (ret &lt; 0)
+    goto finish;
+
+ret = avformat_find_stream_info(format_ctx, NULL);
+if (ret &lt; 0) &#123;
+    av_log(NULL, AV_LOG_ERROR, &quot;Failed to retrieve stream information\n&quot;);
+    goto finish;
+&#125;
+
+// Retrieve FFmpeg version
+if (format_ctx-&gt;iformat &amp;&amp; strcmp(format_ctx-&gt;iformat-&gt;name, &quot;webm&quot;) == 0) &#123;
+    av_log(NULL, AV_LOG_INFO, &quot;FFmpeg version: %s\n&quot;, av_version_info());
+&#125;
+
+if (nb_output_files &lt;= 0 &amp;&amp; nb_input_files == 0) &#123;
+    show_usage();
+    av_log(NULL, AV_LOG_WARNING, &quot;Use -h to get full help or, even better, run &#39;man %s&#39;\n&quot;, program_name);
+    ret = 1;
+    goto finish;
+&#125;
+
+if (nb_output_files &lt;= 0) &#123;
+    av_log(NULL, AV_LOG_FATAL, &quot;At least one output file must be specified\n&quot;);
+    ret = 1;
+    goto finish;
+&#125;
+
+current_time = ti = get_benchmark_time_stamps();
+ret = transcode(sch);
+if (ret &gt;= 0 &amp;&amp; do_benchmark) &#123;
+    int64_t utime, stime, rtime;
+    current_time = get_benchmark_time_stamps();
+    utime = current_time.user_usec - ti.user_usec;
+    stime = current_time.sys_usec  - ti.sys_usec;
+    rtime = current_time.real_usec - ti.real_usec;
+    av_log(NULL, AV_LOG_INFO,
+           &quot;bench: utime=%0.3fs stime=%0.3fs rtime=%0.3fs\n&quot;,
+           utime / 1000000.0, stime / 1000000.0, rtime / 1000000.0);
+&#125;
+
+ret = received_nb_signals                 ? 255 :
+      (ret == FFMPEG_ERROR_RATE_EXCEEDED) ?  69 : ret;
+</code></pre>
+<p>finish:<br>    if (ret &#x3D;&#x3D; AVERROR_EXIT)<br>        ret &#x3D; 0;</p>
+<pre><code>ffmpeg_cleanup(ret);
+
+sch_free(&amp;sch);
+
+return ret;
+</code></pre>
+<p>}</p>
+<p>WES_WEBM_ALPHA_PREMULTIPLY_MACRO</p>
+<p>void SetInputFileMetaDataEncoderValue(char* value)</p>
+<p>ffmpeg修改源代码，将webm文件源的Lavf55.36.101写入到生成的webm文件中</p>
+<p>Lavf60.20.100</p>
+<p>encoder　encoding_tool</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/10/13/Ubuntu%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg/">http://example.com/2023/10/13/Ubuntu上安装FFmpeg/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/8.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/10/18/libswresample%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/"><img class="prev-cover" src="/img/IronMan/8.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">libswresample音频重采样</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/09/Alpine%E4%B8%8A%E5%AE%89%E8%A3%85ffmpeg/"><img class="next-cover" src="/img/IronMan/8.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Alpine上安装ffmpeg</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">79</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/02/02/WebAudioAPI%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/" title="WebAudioAPI音频重采样"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WebAudioAPI音频重采样"/></a><div class="content"><a class="title" href="/2024/02/02/WebAudioAPI%E9%9F%B3%E9%A2%91%E9%87%8D%E9%87%87%E6%A0%B7/" title="WebAudioAPI音频重采样">WebAudioAPI音频重采样</a><time datetime="2024-02-01T16:00:00.000Z" title="发表于 2024-02-02 00:00:00">2024-02-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/02/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E5%BC%95%E6%93%8E%E4%B9%8B%E5%A4%9A%E8%B7%AF%E6%B5%81%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9D%97%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码引擎之多路流转换模块的架构设计"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频编解码引擎之多路流转换模块的架构设计"/></a><div class="content"><a class="title" href="/2024/02/02/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E5%BC%95%E6%93%8E%E4%B9%8B%E5%A4%9A%E8%B7%AF%E6%B5%81%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9D%97%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码引擎之多路流转换模块的架构设计">音视频编解码引擎之多路流转换模块的架构设计</a><time datetime="2024-02-01T16:00:00.000Z" title="发表于 2024-02-02 00:00:00">2024-02-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件管理器的设计"><img src="/img/IronMan/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频解复用插件系统的架构设计之解复用插件管理器的设计"/></a><div class="content"><a class="title" href="/2024/01/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件管理器的设计">音视频解复用插件系统的架构设计之解复用插件管理器的设计</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/14/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件的设计"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频解复用插件系统的架构设计之解复用插件的设计"/></a><div class="content"><a class="title" href="/2024/01/14/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之解复用插件的设计">音视频解复用插件系统的架构设计之解复用插件的设计</a><time datetime="2024-01-13T16:00:00.000Z" title="发表于 2024-01-14 00:00:00">2024-01-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/10/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%AA%92%E4%BD%93%E4%BF%A1%E6%81%AF%E7%9A%84%E6%8F%92%E4%BB%B6%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之媒体信息的插件设计"><img src="/img/IronMan/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频解复用插件系统的架构设计之媒体信息的插件设计"/></a><div class="content"><a class="title" href="/2024/01/10/%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E5%A4%8D%E7%94%A8%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E4%B9%8B%E5%AA%92%E4%BD%93%E4%BF%A1%E6%81%AF%E7%9A%84%E6%8F%92%E4%BB%B6%E8%AE%BE%E8%AE%A1/" title="音视频解复用插件系统的架构设计之媒体信息的插件设计">音视频解复用插件系统的架构设计之媒体信息的插件设计</a><time datetime="2024-01-09T16:00:00.000Z" title="发表于 2024-01-10 00:00:00">2024-01-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
