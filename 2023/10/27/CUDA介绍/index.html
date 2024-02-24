@@ -1,0 +1,256 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>CUDA介绍 | 吴健强のBLOG</title><meta name="keywords" content="CUDA"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CUDA介绍CUDA是2016年Nvida发布的一种建立在NVIDA的CPUs上的一个通用并行技术平台和编程模型。 基于CUDA编程可以利用GPUs的并行计算引擎来更高效率的解决复杂的计算难题，因此被广泛应用于深度学习领域。现如今基于GPU的并行计算已经成为了训练深度学习模型的标配，要是实验室连一块GPU都没有，怕是连论文都发不了。 需要注意的GPU并不是一个独立运行的计算平台，而需要与CPU协同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CUDA介绍">
+<meta property="og:url" content="http://example.com/2023/10/27/CUDA%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="CUDA介绍CUDA是2016年Nvida发布的一种建立在NVIDA的CPUs上的一个通用并行技术平台和编程模型。 基于CUDA编程可以利用GPUs的并行计算引擎来更高效率的解决复杂的计算难题，因此被广泛应用于深度学习领域。现如今基于GPU的并行计算已经成为了训练深度学习模型的标配，要是实验室连一块GPU都没有，怕是连论文都发不了。 需要注意的GPU并不是一个独立运行的计算平台，而需要与CPU协同">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/5.jpg">
+<meta property="article:published_time" content="2023-10-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-24T07:49:08.420Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/5.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2023/10/27/CUDA%E4%BB%8B%E7%BB%8D/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CUDA介绍',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-24 15:49:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CUDA介绍</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-26T16:00:00.000Z" title="发表于 2023-10-27 00:00:00">2023-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-24T07:49:08.420Z" title="更新于 2024-02-24 15:49:08">2024-02-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CUDA介绍"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="CUDA介绍"><a href="#CUDA介绍" class="headerlink" title="CUDA介绍"></a>CUDA介绍</h1><p>CUDA是2016年Nvida发布的一种建立在NVIDA的CPUs上的一个通用并行技术平台和编程模型。</p>
+<p>基于CUDA编程可以利用GPUs的并行计算引擎来更高效率的解决复杂的计算难题，因此被广泛应用于深度学习领域。现如今基于GPU的并行计算已经成为了训练深度学习模型的标配，要是实验室连一块GPU都没有，怕是连论文都发不了。</p>
+<p>需要注意的GPU并不是一个独立运行的计算平台，而需要与CPU协同工作，可以看成是CPU的<font color="red">协处理器</font>，因此当我们在说GPU并行计算时，其实是指的基于CPU+GPU的异构计算架构。在异构计算架构中，GPU与CPU通过PCIe总线连接在一起来协同工作，CPU所在位置称为为主机端（host），而GPU所在位置称为设备端（device）,具体示意图如下：</p>
+<p><img src="/./picture/CPU+GPU%E7%9A%84%E5%BC%82%E6%9E%84.png"></p>
+<p>从上图可以看出<font color="red">GPU包括更多的运算核心，其特别适合数据并行的计算密集型任务，如大型矩阵运算，而CPU的运算核心较少，但是其可以实现复杂的逻辑运算，因此其适合控制密集型任务。另外，CPU上的线程是重量级的，上下文切换开销大，但是GPU由于存在很多核心，其线程是轻量级的</font>。因此，基于CPU+GPU的异构计算平台可以优势互补，CPU负责处理逻辑复杂的串行程序，而GPU重点处理数据密集型的并行计算程序，从而发挥最大功效。</p>
+<p>CUDA是NVIDIA公司所开发的GPU编程模型，它提供了GPU编程的简易接口，基于CUDA编程可以构建基于GPU计算的应用程序。CUDA提供了对其它编程语言的支持，如C&#x2F;C++，Python，Fortran等语言，这里我们选择CUDA C&#x2F;C++接口对CUDA编程进行讲解。</p>
+<h1 id="CUDA编程模型基础"><a href="#CUDA编程模型基础" class="headerlink" title="CUDA编程模型基础"></a>CUDA编程模型基础</h1><p>CUDA编程模型是一个异构模型，<font color="red">需要CPU和GPU协同工作</font>。在CUDA中，host和device是两个重要的概念，我们用<font color="red">host指代CPU及其内存，而用device指代GPU及其内存</font>。<font color="yellow">CUDA程序中既包含host程序，又包含device程序，它们分别在CPU和GPU上运行</font>。同时，host与device之间可以进行通信，这样它们之间可以进行数据拷贝。典型的CUDA程序的执行流程如下：</p>
+<ul>
+<li>在CPU上分配host内存，并进行数据初始化；(Allocate CPU memory and init data)</li>
+<li>在GPU上分配device内存，并从host将数据拷贝到device上；((Allocate GPU memory,CPU data copy to GPU)</li>
+<li>调用CUDA的核函数在device上完成指定的运算；(GPU Working)</li>
+<li>将device上的运算结果拷贝到host上；（GPU -&gt; CPU）</li>
+<li>释放device和host上分配的内存。 (free CPU memory and GPU memory)</li>
+</ul>
+<p>上面流程中最重要的一个过程是调用CUDA的核函数来执行并行计算.这边涉及到CUDA中一个重要的概念kernel。</p>
+<p>kernel是在GPU的device上线程中并行执行的一个函数。核函数用__global__符号声明，在调用时需要用&lt;&lt;&lt;grid, block&gt;&gt;&gt;来指定kernel要执行的线程数量，在CUDA中，每一个线程都要执行核函数，并且每个线程会分配一个唯一的线程号thread ID，这个ID值可以通过核函数的内置变量threadIdx来获得。</p>
+<p>由于GPU实际上是异构模型，所以需要区分host和device上的代码，在CUDA中是通过函数类型限定词开区别host和device上的函数，主要的<font color="red">三个函数类型</font>限定词如下：</p>
+<ul>
+<li><strong>global</strong>：在device上执行，从host中调用（一些特定的GPU也可以从device上调用），返回类型必须是void，不支持可变参数参数，不能成为类成员函数。注意用__global__定义的kernel是异步的，这意味着host不会等待kernel执行完就执行下一步。</li>
+<li><strong>device</strong>：在device上执行，单仅可以从device中调用，不可以和__global__同时用。</li>
+<li><strong>host</strong>：在host上执行，仅可以从host上调用，一般省略不写，不可以和__global__同时用，但可和__device__，此时函数会在device和host都编译。</li>
+</ul>
+<p>由于GPU上面有很多并行化的轻量级线程，因此借助了线程间切换花销小这一特点。kernel在GPU上分配的device上执行的时候，实际上也是启动了非常多的线程，这里将一个kernel所启动的所有线程称为一个网格（grid）。grid内的所有线程共享相同的全局内存空间。<br>同时每个grid又可以分成很多个线程块（block）。而一个线程块里面又包含了很多的线程。</p>
+<p><img src="/./picture/Kerne%E7%BB%93%E6%9E%84%E5%9B%BE.png"></p>
+<pre><code>dim3 grid(3, 2);
+dim3 block(5, 3);
+kernel_fun&lt;&lt;&lt; grid, block &gt;&gt;&gt;(prams...);
+</code></pre>
+<p>如图所示，这是一个gird和block均为2-dim的线程组织。grid和block都是定义为dim3类型的变量，dim3可以看成是包含三个无符号整数（x，y，z）成员的结构体变量，在定义时，缺省值初始化为1。因此grid和block可以灵活地定义为1-dim，2-dim以及3-dim结构，对于图中结构（主要水平方向为x轴），定义的grid和block如下所示，kernel在调用时也必须通过执行配置&lt;&lt;&lt;grid, block&gt;&gt;&gt;来指定kernel所使用的线程数及结构。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2023/10/27/CUDA%E4%BB%8B%E7%BB%8D/">http://example.com/2023/10/27/CUDA介绍/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/5.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/11/01/CUDA%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8/"><img class="prev-cover" src="/img/IronMan/4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CUDA核函数的使用</div></div></a></div><div class="next-post pull-right"><a href="/2023/10/13/Ubuntu%E4%B8%8A%E5%AE%89%E8%A3%85FFmpeg/"><img class="next-cover" src="/img/IronMan/4.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Ubuntu上安装FFmpeg</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">CUDA介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">CUDA编程模型基础</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/02/22/Linux%E7%AB%AFNVIDIA%E7%9A%84%E8%A7%86%E9%A2%91GPU%E5%8A%A0%E9%80%9F%E6%96%B9%E6%A1%88%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" title="Linux端NVIDIA的视频GPU加速方案开发笔记"><img src="/img/IronMan/7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux端NVIDIA的视频GPU加速方案开发笔记"/></a><div class="content"><a class="title" href="/2024/02/22/Linux%E7%AB%AFNVIDIA%E7%9A%84%E8%A7%86%E9%A2%91GPU%E5%8A%A0%E9%80%9F%E6%96%B9%E6%A1%88%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" title="Linux端NVIDIA的视频GPU加速方案开发笔记">Linux端NVIDIA的视频GPU加速方案开发笔记</a><time datetime="2024-02-21T16:00:00.000Z" title="发表于 2024-02-22 00:00:00">2024-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/20/WebCodecs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="WebCodecs学习笔记"><img src="/img/IronMan/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WebCodecs学习笔记"/></a><div class="content"><a class="title" href="/2024/02/20/WebCodecs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="WebCodecs学习笔记">WebCodecs学习笔记</a><time datetime="2024-02-19T16:00:00.000Z" title="发表于 2024-02-20 00:00:00">2024-02-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/18/OpenGL%E5%92%8CCUDA%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="OpenGL和CUDA的学习笔记"><img src="/img/IronMan/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenGL和CUDA的学习笔记"/></a><div class="content"><a class="title" href="/2024/02/18/OpenGL%E5%92%8CCUDA%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="OpenGL和CUDA的学习笔记">OpenGL和CUDA的学习笔记</a><time datetime="2024-02-17T16:00:00.000Z" title="发表于 2024-02-18 00:00:00">2024-02-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码系统的架构设计"><img src="/img/IronMan/8.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频编解码系统的架构设计"/></a><div class="content"><a class="title" href="/2024/02/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码系统的架构设计">音视频编解码系统的架构设计</a><time datetime="2024-02-15T16:00:00.000Z" title="发表于 2024-02-16 00:00:00">2024-02-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="设计模式学习笔记"><img src="/img/IronMan/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式学习笔记"/></a><div class="content"><a class="title" href="/2024/02/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="设计模式学习笔记">设计模式学习笔记</a><time datetime="2024-02-14T16:00:00.000Z" title="发表于 2024-02-15 00:00:00">2024-02-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
