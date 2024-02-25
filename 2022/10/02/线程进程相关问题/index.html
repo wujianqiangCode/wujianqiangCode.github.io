@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>线程进程相关问题 | 吴健强のBLOG</title><meta name="keywords" content="C++"><meta name="author" content="吴健强"><meta name="copyright" content="吴健强"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="线程进程相关问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程进程相关问题">
+<meta property="og:url" content="http://example.com/2022/10/02/%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="吴健强のBLOG">
+<meta property="og:description" content="线程进程相关问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/IronMan/4.jpg">
+<meta property="article:published_time" content="2022-10-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-25T16:10:57.990Z">
+<meta property="article:author" content="吴健强">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/IronMan/4.jpg"><link rel="shortcut icon" href="/img/IronMan/1.jpg"><link rel="canonical" href="http://example.com/2022/10/02/%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '线程进程相关问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-26 00:10:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/IronMan/3.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">99</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/IronMan/2.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">吴健强のBLOG</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 菜单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">线程进程相关问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-01T16:00:00.000Z" title="发表于 2022-10-02 00:00:00">2022-10-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-02-25T16:10:57.990Z" title="更新于 2024-02-26 00:10:57">2024-02-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="线程进程相关问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="线程进程相关问题"><a href="#线程进程相关问题" class="headerlink" title="线程进程相关问题"></a>线程进程相关问题</h1><h2 id="什么是线程和进程"><a href="#什么是线程和进程" class="headerlink" title="什么是线程和进程"></a>什么是线程和进程</h2><p><strong>进程</strong>：是属于<strong>CPU分配资源的最小单位。</strong>在win下我们可以通过打开任务管理器查看到各个进程的运行情况。</p>
+<p><strong>线程</strong>：<strong>线程是CPU执行的最小单位</strong>。线程包含在进程之中的，一个进程至少包含一个线程，也就是说线程能够完成进程中的一个功能，也被称为轻量级进程。</p>
+<h2 id="线程和进程的区别"><a href="#线程和进程的区别" class="headerlink" title="线程和进程的区别"></a>线程和进程的区别</h2><p>性质不同：进程是资源分配的基本单位，线程是cpu执行运算和调度的基本单位<br>归属不同：一个操作系统中可以有很多进程，一个进程可以有很多线程<br>开销不同：进程创建、销毁和切换的开销都要远大于线程<br>拥有资源不同：每个进程都拥有自己的内存和资源，一个进程中的线程会共享这些内存和资源<br>通信方式不同：进程之间可以通过管道、消息队列、共享内存、信号量，以及Socket等机制实现通信，线程之间主要通过共享变量及其变种形式实现通信<br>控制和影响能力不同：子进程无法控制父进程，一个进程发生异常时一般不会影响其他进程；子线程可以控制父线程，如果主线程发生异常，会影响其所在进程和其余线程<br>扩展能力不同：多进程可以方便地扩展到多机分布式系统上，多线程想要扩展到多台机器上就很困难<br>cpu利用率不同：进程的cpu利用率低，因为需要额外的上下文切换开销；线程的cpu利用率高，因为切换简单<br>可靠性不同：进程的可靠性要高于线程</p>
+<h2 id="什么时候用多线程？什么时候用多进程？"><a href="#什么时候用多线程？什么时候用多进程？" class="headerlink" title="什么时候用多线程？什么时候用多进程？"></a>什么时候用多线程？什么时候用多进程？</h2><p>1）需要频繁创建销毁的优先用线程<br>原因请看上面的对比。<br>这种原则最常见的应用就是Web服务器了，来一个连接建立一个线程，断了就销毁线程，要是用进程，创建和销毁的代价是很难承受的<br>2）需要进行大量计算的优先使用线程<br>所谓大量计算，当然就是要耗费很多CPU，切换频繁了，这种情况下线程是最合适的。<br>这种原则最常见的是图像处理、算法处理。<br>3）强相关的处理用线程，弱相关的处理用进程<br>什么叫强相关、弱相关？理论上很难定义，给个简单的例子就明白了。<br>一般的Server需要完成如下任务：消息收发、消息处理。“消息收发”和“消息处理”就是弱相关的任务，而“消息处理”里面可能又分为“消息解码”、“业务处理”，这两个任务相对来说相关性就要强多了。因此“消息收发”和“消息处理”可以分进程设计，“消息解码”、“业务处理”可以分线程设计。<br>当然这种划分方式不是一成不变的，也可以根据实际情况进行调整。<br>4）可能要扩展到多机分布的用进程，多核分布的用线程<br>原因请看上面对比。<br>5）都满足需求的情况下，用你最熟悉、最拿手的方式<br>至于“数据共享、同步”、“编程、调试”、“可靠性”这几个维度的所谓的“复杂、简单”应该怎么取舍，我只能说：没有明确的选择方法。但我可以告诉你一个选择原则：如果多进程和多线程都能够满足要求，那么选择你最熟悉、最拿手的那个。</p>
+<h2 id="多线程会带来什么问题"><a href="#多线程会带来什么问题" class="headerlink" title="多线程会带来什么问题"></a>多线程会带来什么问题</h2><h3 id="主要会带来线程安全问题，性能方面的问题，活跃性问题和堵塞问题"><a href="#主要会带来线程安全问题，性能方面的问题，活跃性问题和堵塞问题" class="headerlink" title="主要会带来线程安全问题，性能方面的问题，活跃性问题和堵塞问题"></a>主要会带来线程安全问题，性能方面的问题，活跃性问题和堵塞问题</h3><h4 id="（一）线程安全问题"><a href="#（一）线程安全问题" class="headerlink" title="（一）线程安全问题"></a>（一）线程安全问题</h4><p>线程安全问题是指<strong>一个进程中存在多个线程</strong>，因为对于同一个进程而言，该进程中的多线程之间的<strong>资源是共享的</strong>。此时某个线程在访问某个数据的时候，也就是线程<strong>从开始访问到结束访问某个数据期间</strong>，发生了这个数据被<strong>其他线程修改</strong>的情况。那么在这种情况下，该线程拿到的数据就会出现例如缺失，不一致等现象，从而造成了线程安全问题。</p>
+<p>简单来说线程安全问题说的就是因为多线程中同时对共享资源中的某个数据进行非原子操作所造成的数据混乱情况，导致程序运行结果是不可预期的，与单线程情况下的程序运行结果不一致。</p>
+<p>线程安全问题发生的条件：</p>
+<p>1）多线程环境下，即存在包括自己在内存在有多个线程。</p>
+<p>2）多线程环境下存在共享资源，且多线程操作该共享资源。</p>
+<p>3）多个线程必须对该共享资源有非原子性操作。</p>
+<p>线程安全问题的解决思路：</p>
+<p>1）尽量不使用共享变量，将不必要的共享变量变成局部变量来使用。</p>
+<p>2）使用synchronized关键字同步代码块，或者使用jdk包中提供的Lock为操作进行加锁。</p>
+<p>3）使用ThreadLocal为每一个线程建立一个变量的副本，各个线程间独立操作，互不影响。</p>
+<h4 id="（二）性能方面的问题"><a href="#（二）性能方面的问题" class="headerlink" title="（二）性能方面的问题"></a>（二）性能方面的问题</h4><p>线程的生命周期开销是非常大的，线程的创建和销毁会占用大量的内存。一旦cpu的处理器数量小于线程数量，那么就会有很多线程被闲置，这些闲置的线程同样会占用大量的内存，并且cpu在分配线程的时候也会消耗性能。所以一旦没有合理的创建线程，那么就会造成cpu性能的大量消耗</p>
+<p>一般的解决思路就是利用线程池了。通过预先创建合理的个数的线程，放入池子中。当我们需要执行任务的时候再从池子中选出空闲的线程先去执行任务，等到它执行完任务后立马将线程归还到线程池中。这样子就能减少线程的频繁创建和销毁所造成的内存开销问题，一定程度上提高了整体的执行效率。</p>
+<p>而且合理的创建线程池数量还会使各个线程都处于忙碌状态，提高任务执行效率，线程池还提供了拒绝策略，当任务数量到达某一临界区时，线程池将拒绝任务的进入，保持现有任务的顺利执行，减少池的压力。</p>
+<h4 id="（三）活跃性问题"><a href="#（三）活跃性问题" class="headerlink" title="（三）活跃性问题"></a>（三）活跃性问题</h4><p>1）死锁，假如线程 A 持有资源 2，线程 B 持有资源 1，他们同时都想申请对方的资源，所以这两个线程就会互相等待而进入死锁状态。多个线程环形占用资源也是一样的会产生死锁问题。</p>
+<p>解决方法：</p>
+<p>避免一个线程同时获取多个锁<br>避免一个线程在锁内同时占用多个资源，尽量保证每个锁只占用一个资源。<br>尝试使用定时锁，使用 lock.tryLock(timeout) 来代替使用内部锁机制。<br>想要避免死锁，可以使用无锁函数（cas）或者使用重入锁（ReentrantLock），通过重入锁使线程中断或限时等待可以有效的规避死锁问题。</p>
+<p>2）饥饿，饥饿指的是某一线程或多个线程因为某些原因一直获取不到资源，导致程序一直无法执行。如某一线程优先级太低导致一直分配不到资源，或者是某一线程一直占着某种资源不放，导致该线程无法执行等。</p>
+<p>解决方法：</p>
+<p>与死锁相比，饥饿现象还是有可能在一段时间之后恢复执行的。可以设置合适的线程优先级来尽量避免饥饿的产生。</p>
+<p>3）活锁，活锁体现了一种谦让的美德，每个线程都想把资源让给对方，但是由于机器“智商”不够，可能会产生一直将资源让来让去，导致资源在两个线程间跳动而无法使某一线程真正的到资源并执行，这就是活锁的问题。</p>
+<h4 id="（四）阻塞"><a href="#（四）阻塞" class="headerlink" title="（四）阻塞"></a>（四）阻塞</h4><p>阻塞是用来形容多线程的问题，几个线程之间共享临界区资源，那么当一个线程占用了临界区资源后，所有需要使用该资源的线程都需要进入该临界区等待，等待会导致线程挂起，一直不能工作，这种情况就是阻塞，如果某一线程一直都不释放资源，将会导致其他所有等待在这个临界区的线程都不能工作。。</p>
+<p>解决方法：</p>
+<p>可以通过减少锁持有时间，读写锁分离，减小锁的粒度，锁分离，锁粗化等方式来优化锁的性能。</p>
+<h2 id="什么是死锁？造成死锁的原因？如何避免死锁？如何解决死锁问题？"><a href="#什么是死锁？造成死锁的原因？如何避免死锁？如何解决死锁问题？" class="headerlink" title="什么是死锁？造成死锁的原因？如何避免死锁？如何解决死锁问题？"></a>什么是死锁？造成死锁的原因？如何避免死锁？如何解决死锁问题？</h2><p>死锁：两个或两个以上得进程在争夺共享资源时产生的一种互相等待的现象。</p>
+<h5 id="产生原因："><a href="#产生原因：" class="headerlink" title="产生原因："></a>产生原因：</h5><p>（1）系统资源不足；</p>
+<p>（2）进程运行推进顺序与速度不同也可能导致死锁；</p>
+<p>（3）资源分配不当；</p>
+<h5 id="产生死锁四个必要条件："><a href="#产生死锁四个必要条件：" class="headerlink" title="产生死锁四个必要条件："></a>产生死锁四个必要条件：</h5><p>（1） 互斥条件：就是一个资源每次只能被一个进程使用。<br>（2） 请求与保持条件：一个进程在请求其它资源而阻塞时，但是它对自己已获得的资源又保持不放。<br>（3） 不剥夺条件:进程已获得的资源，在末使用完之前，不能强行剥夺。<br>（4） 循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。<br>预防死锁和避免死锁的方法：在系统设计、进程调度方面注意不让产生死锁的四个必要条件成立，确定资源的合理分配算法，避免进程永远占用系统资源，对资源分配要进行合理的规划。</p>
+<p>死锁的解决方法：有序资源分配法，银行家算法</p>
+<h2 id="什么是银行家算法？"><a href="#什么是银行家算法？" class="headerlink" title="什么是银行家算法？"></a>什么是银行家算法？</h2><p>银行家算法是一个避免死锁的著名算法，它以银行借贷系统的分配策略为基础，判断并保证系统的安全运行。<br>　　在银行中，客户申请贷款的数量是有限的，每个客户在第一次申请贷款时要声明完成该项目所需的最大资金量，在满足所有贷款要求时，客户应及时归还。银行家在客户申请的贷款数量不超过自己拥有的最大值时，都应尽量满足客户的需要。在这样的描述中，银行家就好比操作系统，资金就是系统资源，客户就相当于要申请资源的进程。<br>　　银行家算法是一种最有代表性的避免死锁的算法。在避免死锁方法中允许进程动态地申请资源，但系统在进行资源分配之前，应先计算此次分配资源的安全性，若分配不会导致系统进入不安全状态，则分配，否则等待。<br>　　<br>银行家算法中的数据结构<br>　　为了实现银行家算法，在系统中必须设置这样四个数据结构，分别用来描述系统中可利用的资源、所有进程对资源的最大需求、系统中的资源分配，以及所有进程还需要多少资源的情况。<br>　　(1) 可利用资源向量 Available。这是一个含有 m 个元素的数组，其中的每一个元素代表一类可利用的资源数目，其初始值是系统中所配置的该类全部可用资源的数目，其数值随该类资源的分配和回收而动态地改变。如果 Available[j] &#x3D; K，则表示系统中现Rj类资源K个。<br>　　(2) 最大需求矩阵Max。这是一个n x m的矩阵，它定义了系统中n个进程中的每个进程对m类资源的最大需求。如果Max[i,j] &#x3D; K，则表示进程i需要Rj 类资源的最大数目为K。<br>　　(3) 分配矩阵 Allocation。这也是一个n x m的矩阵，它定义了系统中每一类资源当前已分配给每一进程的资源数。如果 Allocation[i,jl &#x3D; K，则表示进程i当前己分得Rj类资源的数目为K。<br>　　(4) 需求矩阵Need.这也是一个n×m的矩阵，用以表示每一个进程尚需的各类资源数。如果Need[i,j] &#x3D; K，则表示进程i还需要Rj类资源K个方能完成其任务。<br>上述三个矩阵间存在下述关系:<br>　　　　　　　　　　　　　　Need[i,j] &#x3D; Max[i,j] - allocation[i, j]<br>　　　　　　　　　　　　　　<br>银行家算法详述：<br>　　设 Request；是进程Pi的请求向量，如果 Requesti[j] &#x3D; K，表示进程Pi需要K个Rj类型的资源。当Pi发出资源请求后，系统按下述步骤进行检査:<br>　　(1) 如果 Requesti[j] ≤ Need[i,j]便转向步骤(2)；否则认为出错，因为它所需要的资源数已超过它所宣布的最大值。<br>　　(2) 如果 Requesti[j] ≤ Available[j]，便转向步骤(3)；否则，表示尚无足够资源，Pi须等待。<br>　　(3) 系统试探着把资源分配给进程Pi，并修改下面数据结构中的数值<br>　　　　Available[j] &#x3D; Available[j] - Requesti[j];<br>　　　　Allocation[i,j] &#x3D; Allocation[i,j] + Requesti[j];<br>　　　　Need[i,j] &#x3D; Need[i,j] - Requesti[j];<br>　　(4) 系统执行安全性算法，检查此次资源分配后系统是否处于安全状态。若安全，才正式将资源分配给进程Pi，以完成本次分配；否则，将本次的试探分配作废，恢复原来的资源分配状态，让进程Pi等待。<br>　　<br>安全性算法:<br>系统所执行的安全性算法可描述如下:<br>　　(1) 设置两个向量:①工作向量Work，它表示系统可提供给进程继续运行所需的各类资源数目，它含有m个元素，在执行安全算法开始时，Work &#x3D; Available；② Finish:它表示系统是否有足够的资源分配给进程，使之运行完成。开始时先做 Finish[i] &#x3D; false；当有足够资源分配给进程时，再令Finish[i] &#x3D; true。<br>　　(2) 从进程集合中找到一个能满足下述条件的进程<br>　　　　① Finish[i] &#x3D; false;<br>　　　　② Need[i,j] ≤ Work[j];<br>若找到，执行步骤(3)，否则，执行步骤(4)。<br>　　(3)当进程Pi获得资源后，可顺利执行，直至完成，并释放出分配给它的资源，故应执行:<br>　　　　Work[j] &#x3D; Work[j] + Allocation[i,j];<br>　　　　Finish[i] &#x3D; true;<br>　　　　go to step 2;(goto语句不推荐使用 _ )<br>　　(4)如果所有进程的 Finish[i] &#x3D;true都满足，则表示系统处于安全状态；否则，系统处于不安全状态。<br>　　<br>难点透析：<br>　　本程序的难点在于安全性算法，对于一个安全的系统来说，此步骤较为容易，难在于判断不安全的系统。为什么这么说呢？由于本程序再设计寻找安全序列的部分使用while循环，就需要找到分别处理安全系统与不安全系统的终止循环条件，对于安全的系统，满足条件 Finish[i] &#x3D; false 和 Need[i,j] ≤ Work[j] 的，必定也会按照预期的将 Finish[i] 向量全部置为true，那是不是就可以设置一个变量来累加计数，当该变量与进程数量相等的时候，就说明已经全部置为true了，终止循环，也就是说系统安全。</p>
+<h2 id="多线程中最少要多少个资源才能保证不发生死锁？"><a href="#多线程中最少要多少个资源才能保证不发生死锁？" class="headerlink" title="多线程中最少要多少个资源才能保证不发生死锁？"></a>多线程中最少要多少个资源才能保证不发生死锁？</h2><h2 id="什么是线程安全"><a href="#什么是线程安全" class="headerlink" title="什么是线程安全"></a>什么是线程安全</h2><p>线程安全问题是指<strong>一个进程中存在多个线程</strong>，因为对于同一个进程而言，该进程中的多线程之间的<strong>资源是共享的</strong>。此时某个线程在访问某个数据的时候，也就是线程<strong>从开始访问到结束访问某个数据期间</strong>，发生了这个数据被<strong>其他线程修改</strong>的情况。那么在这种情况下，该线程拿到的数据就会出现例如缺失，不一致等现象，从而造成了线程安全问题。</p>
+<p>简单来说线程安全问题说的就是因为多线程中同时对共享资源中的某个数据进行非原子操作所造成的数据混乱情况，导致程序运行结果是不可预期的，与单线程情况下的程序运行结果不一致。</p>
+<h2 id="如何保证线程安全？"><a href="#如何保证线程安全？" class="headerlink" title="如何保证线程安全？"></a>如何保证线程安全？</h2><p>要想解决线程安全问题的话，就得用到锁或者保证对数据的操作是原子操作。</p>
+<p>在C++11中，可以采用互斥锁mutex，通过lock()和unlock()函数实现上锁和解锁操作</p>
+<p>或者是采用C++标准库中的atomic头文件。</p>
+<h2 id="下列哪些操作是线程安全的？X-x3D-Y，-X-，-X，-X-x3D-1"><a href="#下列哪些操作是线程安全的？X-x3D-Y，-X-，-X，-X-x3D-1" class="headerlink" title="下列哪些操作是线程安全的？X&#x3D;Y， X++ ，++X， X&#x3D;1"></a>下列哪些操作是线程安全的？X&#x3D;Y， X++ ，++X， X&#x3D;1</h2><h2 id="进程通信的方式有哪些"><a href="#进程通信的方式有哪些" class="headerlink" title="进程通信的方式有哪些"></a>进程通信的方式有哪些</h2><p>管道通信、 信号量、信号、消息队列、共享内存、socket套接字</p>
+<h4 id="1-管道"><a href="#1-管道" class="headerlink" title="1)管道"></a>1)管道</h4><p>管道分为有名管道和无名管道<br>无名管道是一种半双工的通信方式,数据只能单向流动,而且只能在具有亲缘关系的进程间使用.进程的亲缘关系一般指的是父子关系。无明管道一般用于两个不同进程之间的通信。当一个进程创建了一个管道,并调用fork创建自己的一个子进程后,父进程关闭读管道端,子进程关闭写管道端,这样提供了两个进程之间数据流动的一种方式。<br>有名管道也是一种半双工的通信方式,但是它允许无亲缘关系进程间的通信。</p>
+<p>无名管道：优点：简单方便；缺点：1）局限于单向通信2）只能创建在它的进程以及其有亲缘关系的进程之间;3）缓冲区有限；<br>有名管道：优点：可以实现任意关系的进程间的通信；缺点：1）长期存于系统中，使用不当容易出错；2）缓冲区有限</p>
+<h4 id="2-信号量"><a href="#2-信号量" class="headerlink" title="2)信号量"></a>2)信号量</h4><p>信号量是一个计数器,可以用来控制多个线程对共享资源的访问.,它不是用于交换大批数据,而用于多线程之间的同步.它常作为一种锁机制,防止某进程在访问资源时其它进程也访问该资源.因此,主要作为进程间以及同一个进程内不同线程之间的同步手段.<br>优点：可以同步进程；缺点：信号量有限</p>
+<h4 id="3-信号"><a href="#3-信号" class="headerlink" title="3)信号"></a>3)信号</h4><p>信号是一种比较复杂的通信方式,用于通知接收进程某个事件已经发生.</p>
+<h4 id="4-消息队列"><a href="#4-消息队列" class="headerlink" title="4)消息队列"></a>4)消息队列</h4><p>消息队列是消息的链表,存放在内核中并由消息队列标识符标识.消息队列克服了信号传递信息少,管道只能承载无格式字节流以及缓冲区大小受限等特点.消息队列是UNIX下不同进程之间可实现共享资源的一种机制,UNIX允许不同进程将格式化的数据流以消息队列形式发送给任意进程.对消息队列具有操作权限的进程都可以使用msget完成对消息队列的操作控制.通过使用消息类型,进程可以按任何顺序读信息,或为消息安排优先级顺序.</p>
+<p>优点：可以实现任意进程间的通信，并通过系统调用函数来实现消息发送和接收之间的同步，无需考虑同步问题，方便；缺点：信息的复制需要额外消耗CPU的时间，不适宜于信息量大或操作频繁的场合</p>
+<h4 id="5-共享内存"><a href="#5-共享内存" class="headerlink" title="5)共享内存"></a>5)共享内存</h4><p>共享内存就是映射一段能被其他进程所访问的内存,这段共享内存由一个进程创建,但多个进程都可以访问.共享内存是最快的IPC(进程间通信)方式,它是针对其它进程间通信方式运行效率低而专门设计的.它往往与其他通信机制,如信号量,配合使用,来实现进程间的同步与通信.</p>
+<p>优点：无须复制，快捷，信息量大；缺点：1）通信是通过将共无法实现享空间缓冲区直接附加到进程的虚拟地址空间中来实现的，因此进程间的读写操作的同步问题；2)利用内存缓冲区直接交换信息，内存的实体存在于计算机中，只能同一个计算机系统中的诸多进程共享，不方便网络通信</p>
+<h4 id="6-套接字："><a href="#6-套接字：" class="headerlink" title="6)套接字："></a>6)套接字：</h4><p>优点：1）传输数据为字节级，传输数据可自定义，数据量小效率高；2）传输数据时间短，性能高；3) 适合于客户端和服务器端之间信息实时交互；4) 可以加密,数据安全性强<br>缺点：1) 需对传输的数据进行解析，转化成应用级的数据。</p>
+<h2 id="线程通信的方式有哪些？"><a href="#线程通信的方式有哪些？" class="headerlink" title="线程通信的方式有哪些？"></a>线程通信的方式有哪些？</h2><p>互斥量 读写锁 信号量</p>
+<p>一个是使用全局变量进行通信，还有就是可以使用自定义的消息机制传递信息。其实因为各个线程之间它是共享进程的资源的，所以它没有像进程通信中的用于数据交换的通信方式，它通信的主要目的是用于线程同步，所以像一些互斥锁啊临界区啊CEvent事件对象和信号量对象都可以实现线程的通信和同步。</p>
+<h2 id="多线程中最少要多少个资源才能保证不发生死锁？-1"><a href="#多线程中最少要多少个资源才能保证不发生死锁？-1" class="headerlink" title="多线程中最少要多少个资源才能保证不发生死锁？"></a>多线程中最少要多少个资源才能保证不发生死锁？</h2><p><strong>采用临界法来计算</strong></p>
+<p>假设发生死锁的临界情况：每个线程都占有了3个资源，这时，只需要再加1个资源就不会发生死锁，所以是（4-1）*3+1&#x3D;10，临界法。</p>
+<p>某系统中有 3 个<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%B9%B6%E5%8F%91&spm=1001.2101.3001.7020">并发</a>进程竞争资源 R，每个进程都需要 5 个 R，那么至少有( )个 R，才能保证系统不会发生死锁。</p>
+<p>解题思路<br>找出发生死锁的临界资源数m<br>大于m就不发生死锁，小于等于m就发生死锁<br>每个进程所需资源数 - 1，再相加，就是发生死锁的临界资源数<br>如：进程P1，P2，P3，所需资源数分别为n1，n2，n3，则临界资源数为 (n1-1) + (n2-1) + (n3-1)</p>
+<p>解题步骤<br>3个进程，每个进程需5个资源<br>临界资源数：(5-1) + (5-1) + (5-1) &#x3D; 12</p>
+<p>每个进程都得到4个资源，即无法执行，也没有多余资源，于是就出现死锁<br>如果再有1个多余资源，不管给任何一个进程，该进程就可以执行；执行完之后释放出5个资源，于是其它进程也可以执行，就不会发生死锁<br>所以最小需要12 + 1 &#x3D; 13个资源<br>选B</p>
+<h2 id="一个进程，里边10个线程，有几个堆几个栈？"><a href="#一个进程，里边10个线程，有几个堆几个栈？" class="headerlink" title="一个进程，里边10个线程，有几个堆几个栈？"></a>一个进程，里边10个线程，有几个堆几个栈？</h2><p>一个进程对应两个栈。用户空间栈和内核栈。</p>
+<p>与线程“绑定”的是栈，用于存储自动变量。</p>
+<p>每一个线程建立的时候，都会新建一个默认栈与之配合。</p>
+<p>堆则是通常与进程相关，用于存储全局性的变量，进程建立的时候，会建立默认堆。</p>
+<p>于是，每一个线程都有自己的栈，然后访问共同的堆。</p>
+<p>所以一共有1个被公用的堆，12个栈</p>
+<h2 id="进程是哪里创建的？谁给进程分配资源？（操作系统内核）"><a href="#进程是哪里创建的？谁给进程分配资源？（操作系统内核）" class="headerlink" title="进程是哪里创建的？谁给进程分配资源？（操作系统内核）"></a>进程是哪里创建的？谁给进程分配资源？（操作系统内核）</h2><p>进程创建，是指操作系统创建一个新的进程。UNIX系统用fork()系统调用，而windows系统用CreatProcess()。进程创建的时机有：</p>
+<p>（1）系统初始化。系统的调度进程创建<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/init%E8%BF%9B%E7%A8%8B/3042859">init进程</a>。</p>
+<p>（2）执行中的进程调用了fork()系统函数。程序中有fork()函数。</p>
+<p>（3）用户登录，用户命令请求创建进程。例如：用户双击一个图标。</p>
+<p>（4）一个批处理作业初始化。大型机、高性能计算机用户提交一个课题，则系统建立<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BD%9C%E4%B8%9A%E6%8E%A7%E5%88%B6%E5%9D%97/7204835">作业控制块</a>，在作业调度后在系统内存中创建进程。</p>
+<h2 id="线程同步和线程异步"><a href="#线程同步和线程异步" class="headerlink" title="线程同步和线程异步"></a>线程同步和线程异步</h2><h4 id="同步是指一个线程要等待另一个线程执行完之后才开始执行当前的线程。"><a href="#同步是指一个线程要等待另一个线程执行完之后才开始执行当前的线程。" class="headerlink" title="同步是指一个线程要等待另一个线程执行完之后才开始执行当前的线程。"></a>同步是指一个线程要等待另一个线程执行完之后才开始执行当前的线程。</h4><h4 id="异步是指一个线程去执行，它的下一个线程不必等待它执行完就开始执行。"><a href="#异步是指一个线程去执行，它的下一个线程不必等待它执行完就开始执行。" class="headerlink" title="异步是指一个线程去执行，它的下一个线程不必等待它执行完就开始执行。"></a>异步是指一个线程去执行，它的下一个线程不必等待它执行完就开始执行。</h4><p>一般一个进程启动的多个不相干线程，它们之间的相互关系就为异步，比如游戏有图像和背景音乐，图像是由玩家操作的 而背景音乐是系统循环播放，它们两个线程之间没什么关系各干各的，这就是线程异步。至于同步的话指的是多线程同时操作一个数据，这个时候需要对数据添加保护，这个保护就是线程的同步<br>同步使用场景：对于多个线程同时访问一块数据的时候，必须使用同步，否则可能会出现不安全的情况，有一种情况不需要同步技术，那就是原子操作，也就是说操作系统在底层保证了操作要么全部做完，要么不做。<br><strong>异步的使用场景</strong>：当只有一个线程访问当前数据的时候。比如观察者模式，它没有共享区，主题发生变化后通知观察者更新，主题继续做自己的事情，不需要等待观察者更新完成后再工作。</p>
+<h2 id="多线程同步和互斥有几种实现方法，分别适用什么情况"><a href="#多线程同步和互斥有几种实现方法，分别适用什么情况" class="headerlink" title="多线程同步和互斥有几种实现方法，分别适用什么情况"></a>多线程同步和互斥有几种实现方法，分别适用什么情况</h2><h4 id="线程同步的话有临界区，互斥量，信号量，事件。"><a href="#线程同步的话有临界区，互斥量，信号量，事件。" class="headerlink" title="线程同步的话有临界区，互斥量，信号量，事件。"></a>线程同步的话有临界区，互斥量，信号量，事件。</h4><p>临界区适合一个进程内的多线程访问公共区域或代码段时使用。<br>互斥量是可以命名的，也就是说它可以适用不同进程内多线程访问公共资源时使用。所以在选择上如果是在进程内部使用的话，用临界区会带来速度上的优势并且能够减少资源占用量。<br>信号量与临界区和互斥量不同，它是允许多个线程同时访问公共资源的，它相当于操作系统的PV操作，它会事先设定一个最大线程数，如果线程占用数达到最大，那么其它线程就不能再进来，如果有部分线程释放资源了，那么其它线程才能进来访问资源。<br>事件是通过通知操作的方式来保持线程同步。<br>注意：互斥量，事件，信号量都是内核对象，可以跨进程使用。<br>●C++多线程有几种实现方法<br>直接使用WIN32 API CreateThread，或者用C运行库_beginthread创建线程,MFC的话用AfxBeginThread. 还有就是运用第三方线程库，比如boost的thread等等。<br>_beginthread和CreateThread的区别：_beginthread内部调用了CreateThread.<br>如果你的程序只调用 Win32 API&#x2F;SDK ，就放心用 CreateThread，如果要用到C++运行时库，那么就要使用_beginthreadex，因为C++运行库有一些函数里面使用了全局变量，beginthreadex 为这些全局变量做了处理，使得每个线程都有一份独立的“全局”量，在这种情况下使用CreateThread的话就会出现不安全的问题</p>
+<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>概念：进程间进行通信或相互竞争系统资源而产生的永久阻塞，若无外力作用将永远处在死锁状态。<br>产生原因：（1）系统资源不足；（2）进程运行推进顺序与速度不同也可能导致死锁；（3）资源分配不当；<br>产生死锁四个必要条件：<br>（1） 互斥条件：就是一个资源每次只能被一个进程使用。<br>（2） 请求与保持条件：一个进程在请求其它资源而阻塞时，但是它对自己已获得的资源又保持不放。<br>（3） 不剥夺条件:进程已获得的资源，在末使用完之前，不能强行剥夺。<br>（4） 循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。<br>预防死锁和避免死锁的方法：在系统设计、进程调度方面注意不让产生死锁的四个必要条件成立，确定资源的合理分配算法，避免进程永远占用系统资源，对资源分配要进行合理的规划。</p>
+<h2 id="多线程中栈与堆是公有的还是私有的"><a href="#多线程中栈与堆是公有的还是私有的" class="headerlink" title="多线程中栈与堆是公有的还是私有的"></a>多线程中栈与堆是公有的还是私有的</h2><p>因为线程是共享进程的资源的，所以<strong>栈是私有的</strong>，<strong>堆是公有的</strong></p>
+<h4 id="1、程序什么时候应该使用线程，什么时候单线程效率高"><a href="#1、程序什么时候应该使用线程，什么时候单线程效率高" class="headerlink" title="1、程序什么时候应该使用线程，什么时候单线程效率高"></a>1、程序什么时候应该使用线程，什么时候单线程效率高</h4><p>我们平时在写代码的时候一般使用线程会比较多，像需要频繁创建销毁的，要处理大量运算、数据，又要能很好的显示界面和及时响应消息的优先选择多线程，因为像这些运算会消耗大量的CPU，常见的有算法处理和图像处理。还有一些操作允许并发而且有可能阻塞的, 也推荐使用多线程. 例如SOCKET, 磁盘操作等等。进程一般来说更稳定，而且它是内存隔离的，单个进程的异常不会导致整个应用的崩溃，方</p>
+<h4 id="2、惊群现象"><a href="#2、惊群现象" class="headerlink" title="2、惊群现象"></a>2、惊群现象</h4><p>多个进程&#x2F;线程在等待同一资源时，每当资源可用，所有的进程&#x2F;线程都来竞争资源的现象。</p>
+<p>解决思路：将各个进程放在一个等待队列里，每次都只会唤醒队首进程，解决了惊群问题。</p>
+<h4 id="3、C-函数内的静态变量初始化以及线程安全问题"><a href="#3、C-函数内的静态变量初始化以及线程安全问题" class="headerlink" title="3、C++函数内的静态变量初始化以及线程安全问题"></a>3、C++函数内的静态变量初始化以及线程安全问题</h4><p>如果是编译时和加载时初始化, 是不会存在线程安全这个issue的;<br>    因为这两种初始化一定发生在Main函数执行之前, 这个时候尚未进入程序运行空间; 而这些初始化一定是在单线程环境下操作的!  –  都是在执行C Runtime的startup代码中的void mainCRTStartup(void)函数时所在的OS系统加载程序时的主线程空间上发生的!</p>
+<p>如果是运行时初始化, 因为无法保证访问这个静态变量所在的局部函数&#x2F;全局函数&#x2F;类成员函数&#x2F;类静态成员函数  一定只会从某个特定的线程中被访问, 因此, 就一定会存在”线程安全”的issue!</p>
+<h4 id="4、C-线程安全的单例类"><a href="#4、C-线程安全的单例类" class="headerlink" title="4、C++线程安全的单例类"></a>4、C++线程安全的单例类</h4><p>单例模式是一种非常常用的设计模式，几乎在稍大的工程项目中都会用到。单例类保证在全局中只有唯一一个类的实例对象，并且在类的内部提供了获取这个唯一实例的接口。在类中，实例化出一个对象需要调用构造函数，为了防止在类的外部调用构造函数构造出实例，对类的构造函数就应有所限制，可以将构造函数的访问权限设置为private或protected。还要提供一个访问实例的接口，在类中定义一个static函数，返回类内部唯一的实例对象即可。</p>
+<h2 id="如何理解互斥锁，条件锁，读写锁以及自旋锁"><a href="#如何理解互斥锁，条件锁，读写锁以及自旋锁" class="headerlink" title="如何理解互斥锁，条件锁，读写锁以及自旋锁"></a>如何理解互斥锁，条件锁，读写锁以及自旋锁</h2><h3 id="mutex（互斥量）"><a href="#mutex（互斥量）" class="headerlink" title="mutex（互斥量）"></a>mutex（互斥量）</h3><p>mutex无疑是最常见的多线程同步方式。其思想简单粗暴，多线程共享一个互斥量，然后线程之间去竞争。得到锁的线程可以进入临界区执行代码。</p>
+<h3 id="condition-variable（条件变量），条件锁"><a href="#condition-variable（条件变量），条件锁" class="headerlink" title="condition variable（条件变量），条件锁"></a>condition variable（条件变量），条件锁</h3><p>它是一种线程间的通讯机制，并且几乎总是和互斥量一起使用的。所以互斥量和条件变量二者一般是成套出现的。比如C++11中也有条件变量的API： std::condition_variable。</p>
+<p>pthread_cond_wait函数会把条件变量和互斥量都传入。并且多线程调用的时候条件变量和互斥量一定要一一对应，不能一个条件变量在不同线程中wait的时候传入不同的互斥量。否则是未定义结果。</p>
+<p>关于是先解锁互斥量还是先进行条件变量的通知，是另外一个比较大的议题。有种论断说：先解锁互斥量再通知条件变量可以减少多余的上下文切换，进而提高效率。这种说法是基于一种实现假设：先通知条件变量，再解锁。可能让其他等待条件变量的线程被唤醒了，但是此时互斥量还没解锁，从而再次陷入休眠。然而对于另外一些实现，比如Linux系统，则通过等待变形（wait morphing）[2]解决了这一问题。所以先通知再解锁也没用问题。</p>
+<p>另外在使用条件变量的过程中有个稍微违反直觉的写法：那就是使用while而不是if来做判断状态是否满足。这样做的原因有二：</p>
+<p>1.避免惊群；<br>2.避免某些情况下线程被虚假唤醒（即没有pthread_cond_signal就解除了阻塞）。</p>
+<h3 id="read-write-lock（读写锁）"><a href="#read-write-lock（读写锁）" class="headerlink" title="read-write lock（读写锁）"></a>read-write lock（读写锁）</h3><p>在读多写少的场景下，不加区分的使用互斥量显然是有点浪费的。此时便该上演读写锁的拿手好戏。</p>
+<p>读写锁有一个别称叫『共享-独占锁』。不过单看『共享-独占锁』或者『读写锁』这两个名称，其实并未区分对于读和写，到底谁共享，谁独占。可能会让人误以为读写锁是一种更为泛化的称呼，其实不是。读写锁的含义是准确的：是一种 读共享，写独占的锁。</p>
+<p>读写锁的特性：</p>
+<p>当读写锁被加了写锁时，其他线程对该锁加读锁或者写锁都会阻塞（不是失败）。<br>当读写锁被加了读锁时，其他线程对该锁加写锁会阻塞，加读锁会成功。<br>因而适用于多读少写的场景。</p>
+<h3 id="spinlock（自旋锁）"><a href="#spinlock（自旋锁）" class="headerlink" title="spinlock（自旋锁）"></a>spinlock（自旋锁）</h3><p>什么是自旋（spin）呢？更为通俗的一个词是『忙等待』（busy waiting）。最最通俗的一个理解，其实就是死循环……。</p>
+<p>自旋锁不会引起线程休眠。当共享资源的状态不满足的时候，自旋锁会不停地循环检测状态。因为不会陷入休眠，而是忙等待的方式也就不需要条件变量。</p>
+<p>这是优点也是缺点。不休眠就不会引起上下文切换，但是会比较浪费CPU。</p>
+<h2 id="乐观锁和悲观锁"><a href="#乐观锁和悲观锁" class="headerlink" title="乐观锁和悲观锁"></a>乐观锁和悲观锁</h2><p>前面提到的互斥锁、自旋锁、读写锁，都是属于悲观锁。</p>
+<p>悲观锁做事比较悲观，它认为<strong>多线程同时修改共享资源的概率比较高，于是很容易出现冲突，所以访问共享资源前，先要上锁</strong>。</p>
+<p>那相反的，如果多线程同时修改共享资源的概率比较低，就可以采用乐观锁。</p>
+<p>乐观锁做事比较乐观，它假定冲突的概率很低，它的工作方式是：<strong>先修改完共享资源，再验证这段时间内有没有发生冲突，如果没有其他线程在修改资源，那么操作完成，如果发现有其他线程已经修改过这个资源，就放弃本次操作</strong>。</p>
+<p>放弃后如何重试，这跟业务场景息息相关，虽然重试的成本很高，但是冲突的概率足够低的话，还是可以接受的。</p>
+<p>可见，乐观锁的心态是，不管三七二十一，先改了资源再说。另外，你会发现<strong>乐观锁全程并没有加锁，所以它也叫无锁编程</strong>。</p>
+<p>这里举一个场景例子：在线文档。</p>
+<p>我们都知道在线文档可以同时多人编辑的，如果使用了悲观锁，那么只要有一个用户正在编辑文档，此时其他用户就无法打开相同的文档了，这用户体验当然不好了。</p>
+<p>那实现多人同时编辑，实际上是用了乐观锁，它允许多个用户打开同一个文档进行编辑，编辑完提交之后才验证修改的内容是否有冲突。</p>
+<p>5、多线程环境带有状态的对象的讨论<br>6、C++多线程加volatile的错误认识<br>7、并行编程中多进程和多线程，什么情况下多进程能解决的多线程无法解决<br>8、如何证明一个数据结构是线程安全的<br>9、lock-free的实现方式<br>10、锁的实现方式<br>11、多线程编程的时候，使用无锁结构会不会比有锁结构更加快</p>
+<p>14、异步，多线程和并行的区别</p>
+<p>16、开发多线程的程序应该注意哪些问题<br>17、如何测试线程池的性能</p>
+<p>19、如何理解互斥锁，条件锁，读写锁以及自旋锁<br>20、互斥锁，同步锁，临界区，互斥量，信号量，自旋锁之间联系是什么<br>21、pthread_cond_wait 为什么需要传递 mutex 参数<br>22、多线程网络编程中如何合理地选择线程数<br>23、malloc和free是线程安全的吗，在多线程开发时用这两个函数应该注意什么<br>24、僵尸进程和孤儿进程有什么区别、如何处理<br>33、进程间通信（IPC）方式<br>34、进程空间和内核空间对内存的管理不同<br>35、虚拟内存的作用<br>36、虚拟内存的实现<br>38、fork与vfork区别<br>39、exit()与_exit()区别<br>41、共享内存的实现原理<br>44、如何实现守护进程<br>45、32位系统一个进程最多有多少堆内存<br>47、可重入函数与线程安全的区别与联系<br>48、双重检查锁定模式(DCLP)的风险<br>49、内存屏障详解<br>50、原子操作原理<br>51、Linux有内核级线程么<br>52、使用线程是如何防止出现大的波峰<br>53、操作系统中进程调度策略有哪几种<br>54、</p>
+<p>55、读者-写者问题<br>56、哲学家进餐问题<br>57、进程状态的切换图</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">吴健强</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/10/02/%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/">http://example.com/2022/10/02/线程进程相关问题/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">吴健强のBLOG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/IronMan/4.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/assets/img/weixinpay.jpeg" target="_blank"><img class="post-qr-code-img" src="/assets/img/weixinpay.jpeg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/02/%E6%80%BB%E7%BB%93%E4%B8%8BC++%E4%B8%AD%E6%A8%A1%E5%9D%97(Dll)%E5%AF%B9%E5%A4%96%E6%9A%B4%E9%9C%B2%E6%8E%A5%E5%8F%A3%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9A/"><img class="prev-cover" src="/img/IronMan/6.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">总结下C++中模块(Dll)对外暴露接口的方式：</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/02/%E8%AE%B0%E5%BD%95%E4%B8%80%E4%B8%8B%E5%9C%A8mac%E4%B8%8B%E7%BC%96%E8%AF%91FFmpeg%E7%9A%84%E8%BF%87%E7%A8%8B/"><img class="next-cover" src="/img/IronMan/1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Mac下编译FFmpeg全过程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/IronMan/3.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">吴健强</div><div class="author-info__description">吴健强のBLOG</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">99</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wujianqiangCode"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/wujianqiangCode" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ijianqiangwu@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/assets/img/qq.jpg" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="/assets/img/weixin.jpeg" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">线程进程相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">什么是线程和进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">线程和进程的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%EF%BC%9F%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8%E5%A4%9A%E8%BF%9B%E7%A8%8B%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">什么时候用多线程？什么时候用多进程？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%BC%9A%E5%B8%A6%E6%9D%A5%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.</span> <span class="toc-text">多线程会带来什么问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E4%BC%9A%E5%B8%A6%E6%9D%A5%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%EF%BC%8C%E6%80%A7%E8%83%BD%E6%96%B9%E9%9D%A2%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E6%B4%BB%E8%B7%83%E6%80%A7%E9%97%AE%E9%A2%98%E5%92%8C%E5%A0%B5%E5%A1%9E%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.</span> <span class="toc-text">主要会带来线程安全问题，性能方面的问题，活跃性问题和堵塞问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E4%B8%80%EF%BC%89%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">（一）线程安全问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E4%BA%8C%EF%BC%89%E6%80%A7%E8%83%BD%E6%96%B9%E9%9D%A2%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">（二）性能方面的问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E4%B8%89%EF%BC%89%E6%B4%BB%E8%B7%83%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">（三）活跃性问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E5%9B%9B%EF%BC%89%E9%98%BB%E5%A1%9E"><span class="toc-number">1.4.1.4.</span> <span class="toc-text">（四）阻塞</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%BB%E9%94%81%EF%BC%9F%E9%80%A0%E6%88%90%E6%AD%BB%E9%94%81%E7%9A%84%E5%8E%9F%E5%9B%A0%EF%BC%9F%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81%EF%BC%9F%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%AD%BB%E9%94%81%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.5.</span> <span class="toc-text">什么是死锁？造成死锁的原因？如何避免死锁？如何解决死锁问题？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="toc-number">1.5.0.0.1.</span> <span class="toc-text">产生原因：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BA%A7%E7%94%9F%E6%AD%BB%E9%94%81%E5%9B%9B%E4%B8%AA%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6%EF%BC%9A"><span class="toc-number">1.5.0.0.2.</span> <span class="toc-text">产生死锁四个必要条件：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95%EF%BC%9F"><span class="toc-number">1.6.</span> <span class="toc-text">什么是银行家算法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%9C%80%E5%B0%91%E8%A6%81%E5%A4%9A%E5%B0%91%E4%B8%AA%E8%B5%84%E6%BA%90%E6%89%8D%E8%83%BD%E4%BF%9D%E8%AF%81%E4%B8%8D%E5%8F%91%E7%94%9F%E6%AD%BB%E9%94%81%EF%BC%9F"><span class="toc-number">1.7.</span> <span class="toc-text">多线程中最少要多少个资源才能保证不发生死锁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">1.8.</span> <span class="toc-text">什么是线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="toc-number">1.9.</span> <span class="toc-text">如何保证线程安全？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E5%88%97%E5%93%AA%E4%BA%9B%E6%93%8D%E4%BD%9C%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%EF%BC%9FX-x3D-Y%EF%BC%8C-X-%EF%BC%8C-X%EF%BC%8C-X-x3D-1"><span class="toc-number">1.10.</span> <span class="toc-text">下列哪些操作是线程安全的？X&#x3D;Y， X++ ，++X， X&#x3D;1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-number">1.11.</span> <span class="toc-text">进程通信的方式有哪些</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%AE%A1%E9%81%93"><span class="toc-number">1.11.0.1.</span> <span class="toc-text">1)管道</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-number">1.11.0.2.</span> <span class="toc-text">2)信号量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BF%A1%E5%8F%B7"><span class="toc-number">1.11.0.3.</span> <span class="toc-text">3)信号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="toc-number">1.11.0.4.</span> <span class="toc-text">4)消息队列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">1.11.0.5.</span> <span class="toc-text">5)共享内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E5%A5%97%E6%8E%A5%E5%AD%97%EF%BC%9A"><span class="toc-number">1.11.0.6.</span> <span class="toc-text">6)套接字：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%80%9A%E4%BF%A1%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">1.12.</span> <span class="toc-text">线程通信的方式有哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%9C%80%E5%B0%91%E8%A6%81%E5%A4%9A%E5%B0%91%E4%B8%AA%E8%B5%84%E6%BA%90%E6%89%8D%E8%83%BD%E4%BF%9D%E8%AF%81%E4%B8%8D%E5%8F%91%E7%94%9F%E6%AD%BB%E9%94%81%EF%BC%9F-1"><span class="toc-number">1.13.</span> <span class="toc-text">多线程中最少要多少个资源才能保证不发生死锁？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E8%BF%9B%E7%A8%8B%EF%BC%8C%E9%87%8C%E8%BE%B910%E4%B8%AA%E7%BA%BF%E7%A8%8B%EF%BC%8C%E6%9C%89%E5%87%A0%E4%B8%AA%E5%A0%86%E5%87%A0%E4%B8%AA%E6%A0%88%EF%BC%9F"><span class="toc-number">1.14.</span> <span class="toc-text">一个进程，里边10个线程，有几个堆几个栈？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%98%AF%E5%93%AA%E9%87%8C%E5%88%9B%E5%BB%BA%E7%9A%84%EF%BC%9F%E8%B0%81%E7%BB%99%E8%BF%9B%E7%A8%8B%E5%88%86%E9%85%8D%E8%B5%84%E6%BA%90%EF%BC%9F%EF%BC%88%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8%EF%BC%89"><span class="toc-number">1.15.</span> <span class="toc-text">进程是哪里创建的？谁给进程分配资源？（操作系统内核）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%BC%82%E6%AD%A5"><span class="toc-number">1.16.</span> <span class="toc-text">线程同步和线程异步</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E6%98%AF%E6%8C%87%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%A6%81%E7%AD%89%E5%BE%85%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E5%AE%8C%E4%B9%8B%E5%90%8E%E6%89%8D%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%E5%BD%93%E5%89%8D%E7%9A%84%E7%BA%BF%E7%A8%8B%E3%80%82"><span class="toc-number">1.16.0.1.</span> <span class="toc-text">同步是指一个线程要等待另一个线程执行完之后才开始执行当前的线程。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E6%98%AF%E6%8C%87%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E5%8E%BB%E6%89%A7%E8%A1%8C%EF%BC%8C%E5%AE%83%E7%9A%84%E4%B8%8B%E4%B8%80%E4%B8%AA%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%BF%85%E7%AD%89%E5%BE%85%E5%AE%83%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%B0%B1%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%E3%80%82"><span class="toc-number">1.16.0.2.</span> <span class="toc-text">异步是指一个线程去执行，它的下一个线程不必等待它执行完就开始执行。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5%E6%9C%89%E5%87%A0%E7%A7%8D%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%EF%BC%8C%E5%88%86%E5%88%AB%E9%80%82%E7%94%A8%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5"><span class="toc-number">1.17.</span> <span class="toc-text">多线程同步和互斥有几种实现方法，分别适用什么情况</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E8%AF%9D%E6%9C%89%E4%B8%B4%E7%95%8C%E5%8C%BA%EF%BC%8C%E4%BA%92%E6%96%A5%E9%87%8F%EF%BC%8C%E4%BF%A1%E5%8F%B7%E9%87%8F%EF%BC%8C%E4%BA%8B%E4%BB%B6%E3%80%82"><span class="toc-number">1.17.0.1.</span> <span class="toc-text">线程同步的话有临界区，互斥量，信号量，事件。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%BB%E9%94%81"><span class="toc-number">1.18.</span> <span class="toc-text">死锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%A0%88%E4%B8%8E%E5%A0%86%E6%98%AF%E5%85%AC%E6%9C%89%E7%9A%84%E8%BF%98%E6%98%AF%E7%A7%81%E6%9C%89%E7%9A%84"><span class="toc-number">1.19.</span> <span class="toc-text">多线程中栈与堆是公有的还是私有的</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E7%A8%8B%E5%BA%8F%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8%E7%BA%BF%E7%A8%8B%EF%BC%8C%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%95%88%E7%8E%87%E9%AB%98"><span class="toc-number">1.19.0.1.</span> <span class="toc-text">1、程序什么时候应该使用线程，什么时候单线程效率高</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%83%8A%E7%BE%A4%E7%8E%B0%E8%B1%A1"><span class="toc-number">1.19.0.2.</span> <span class="toc-text">2、惊群现象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81C-%E5%87%BD%E6%95%B0%E5%86%85%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-number">1.19.0.3.</span> <span class="toc-text">3、C++函数内的静态变量初始化以及线程安全问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81C-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%8D%95%E4%BE%8B%E7%B1%BB"><span class="toc-number">1.19.0.4.</span> <span class="toc-text">4、C++线程安全的单例类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%E4%BA%92%E6%96%A5%E9%94%81%EF%BC%8C%E6%9D%A1%E4%BB%B6%E9%94%81%EF%BC%8C%E8%AF%BB%E5%86%99%E9%94%81%E4%BB%A5%E5%8F%8A%E8%87%AA%E6%97%8B%E9%94%81"><span class="toc-number">1.20.</span> <span class="toc-text">如何理解互斥锁，条件锁，读写锁以及自旋锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mutex%EF%BC%88%E4%BA%92%E6%96%A5%E9%87%8F%EF%BC%89"><span class="toc-number">1.20.1.</span> <span class="toc-text">mutex（互斥量）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#condition-variable%EF%BC%88%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%EF%BC%89%EF%BC%8C%E6%9D%A1%E4%BB%B6%E9%94%81"><span class="toc-number">1.20.2.</span> <span class="toc-text">condition variable（条件变量），条件锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read-write-lock%EF%BC%88%E8%AF%BB%E5%86%99%E9%94%81%EF%BC%89"><span class="toc-number">1.20.3.</span> <span class="toc-text">read-write lock（读写锁）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spinlock%EF%BC%88%E8%87%AA%E6%97%8B%E9%94%81%EF%BC%89"><span class="toc-number">1.20.4.</span> <span class="toc-text">spinlock（自旋锁）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%90%E8%A7%82%E9%94%81%E5%92%8C%E6%82%B2%E8%A7%82%E9%94%81"><span class="toc-number">1.21.</span> <span class="toc-text">乐观锁和悲观锁</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/02/22/Linux%E7%AB%AFNVIDIA%E7%9A%84%E8%A7%86%E9%A2%91GPU%E5%8A%A0%E9%80%9F%E6%96%B9%E6%A1%88%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" title="Linux端NVIDIA的视频GPU加速方案开发笔记"><img src="/img/IronMan/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux端NVIDIA的视频GPU加速方案开发笔记"/></a><div class="content"><a class="title" href="/2024/02/22/Linux%E7%AB%AFNVIDIA%E7%9A%84%E8%A7%86%E9%A2%91GPU%E5%8A%A0%E9%80%9F%E6%96%B9%E6%A1%88%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" title="Linux端NVIDIA的视频GPU加速方案开发笔记">Linux端NVIDIA的视频GPU加速方案开发笔记</a><time datetime="2024-02-21T16:00:00.000Z" title="发表于 2024-02-22 00:00:00">2024-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/20/WebCodecs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="WebCodecs学习笔记"><img src="/img/IronMan/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WebCodecs学习笔记"/></a><div class="content"><a class="title" href="/2024/02/20/WebCodecs%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="WebCodecs学习笔记">WebCodecs学习笔记</a><time datetime="2024-02-19T16:00:00.000Z" title="发表于 2024-02-20 00:00:00">2024-02-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/18/OpenGL%E5%92%8CCUDA%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="OpenGL和CUDA的学习笔记"><img src="/img/IronMan/7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenGL和CUDA的学习笔记"/></a><div class="content"><a class="title" href="/2024/02/18/OpenGL%E5%92%8CCUDA%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="OpenGL和CUDA的学习笔记">OpenGL和CUDA的学习笔记</a><time datetime="2024-02-17T16:00:00.000Z" title="发表于 2024-02-18 00:00:00">2024-02-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码系统的架构设计"><img src="/img/IronMan/1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="音视频编解码系统的架构设计"/></a><div class="content"><a class="title" href="/2024/02/16/%E9%9F%B3%E8%A7%86%E9%A2%91%E7%BC%96%E8%A7%A3%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/" title="音视频编解码系统的架构设计">音视频编解码系统的架构设计</a><time datetime="2024-02-15T16:00:00.000Z" title="发表于 2024-02-16 00:00:00">2024-02-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="设计模式学习笔记"><img src="/img/IronMan/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设计模式学习笔记"/></a><div class="content"><a class="title" href="/2024/02/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="设计模式学习笔记">设计模式学习笔记</a><time datetime="2024-02-14T16:00:00.000Z" title="发表于 2024-02-15 00:00:00">2024-02-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/IronMan/2.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 吴健强</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="66641056" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
